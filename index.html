@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapping Access at Home</title>
+<meta name="description" content="Andrew Choi, Design Studio B, HW2 and HW3: mapping accessibility in a shared house after a back injury.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&family=IBM+Plex+Mono:wght@400;500&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f3ec; --paper2:#ece7dc; --ink:#1d1b18; --muted:#6b655c; --line:#cfc7b8;
+  --bad:#c2410c; --bad-soft:rgba(194,65,12,.22); --good:#0f766e; --good-soft:rgba(15,118,110,.2);
+  --mid:#b98900; --mid-soft:rgba(185,137,0,.25); --night:#22252e;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --paper:#16161a; --paper2:#212127; --ink:#ece8df; --muted:#a39d92; --line:#3a3a42;
+    --bad:#fb923c; --bad-soft:rgba(251,146,60,.25); --good:#2dd4bf; --good-soft:rgba(45,212,191,.2);
+    --mid:#facc15; --mid-soft:rgba(250,204,21,.22); --night:#0b0c10; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 "Newsreader",Georgia,serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px}
+.wide{max-width:1040px;margin:0 auto;padding:0 20px}
+header.top{border-bottom:1px solid var(--line);padding:56px 0 32px}
+.kicker,.mono{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+h1{font-size:clamp(36px,6vw,60px);line-height:1.05;margin:12px 0 16px;font-weight:600;letter-spacing:-.01em}
+h2{font-size:32px;line-height:1.15;margin:72px 0 8px;font-weight:600}
+h3{font-size:22px;margin:40px 0 4px;font-weight:600}
+p{margin:0 0 16px}
+nav.toc{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+nav.toc .wide{display:flex;gap:20px;overflow-x:auto;padding-top:10px;padding-bottom:10px}
+nav.toc a{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink);text-decoration:none;white-space:nowrap}
+nav.toc a:hover{color:var(--bad)}
+.part{border-top:3px solid var(--ink);margin-top:96px;padding-top:12px}
+figure{margin:32px 0}
+figcaption{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+.map{background:var(--paper2);border:1px solid var(--line);border-radius:6px;padding:12px}
+svg{display:block;width:100%;height:auto}
+ul.notes{padding-left:20px} ul.notes li{margin-bottom:6px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);margin-top:10px}
+.legend span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-2px;background:var(--c)}
+.photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
+.photos figure{margin:0}
+.photos img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;display:block}
+.flows{display:grid;gap:28px}
+.flow h4{margin:0 0 10px;font-size:18px}
+.flow ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.flow li{flex:1 1 130px;border:1.5px solid var(--ink);border-radius:8px;padding:8px 10px;font-family:"Kalam",cursive;font-size:16px;line-height:1.3;background:var(--paper);position:relative}
+.flow li[data-e="3"]{border-color:var(--bad);background:var(--bad-soft)}
+.flow li[data-e="2"]{border-color:var(--mid);background:var(--mid-soft)}
+.flow li[data-e="0"]{border-color:var(--good);background:var(--good-soft)}
+.flow li small{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--muted);margin-top:4px}
+.toggle{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.toggle label{font-family:"IBM Plex Mono",monospace;font-size:13px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;background:var(--paper)}
+.toggle input{position:absolute;opacity:0;pointer-events:none}
+.toggle input:checked+span{font-weight:500}
+.toggle label:has(input:checked){background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.toggle label:has(input:focus-visible){outline:2px solid var(--bad);outline-offset:2px}
+/* layer switching (CSS only) */
+.layer{opacity:0;transition:opacity .3s}
+.lm:has(input[value=effort]:checked) .l-effort,
+.lm:has(input[value=toilet]:checked) .l-toilet,
+.lm:has(input[value=plan]:checked) .l-plan{opacity:1}
+.lm:has(input[value=day]:checked) .l-day,
+.lm:has(input[value=night]:checked) .l-night{opacity:1}
+.item{border-left:3px solid var(--bad);padding-left:18px;margin:28px 0}
+.item.i2{border-color:var(--mid)} .item.i3{border-color:var(--night)}
+@media (prefers-color-scheme: dark){ .item.i3{border-color:var(--muted)} }
+.cite p{padding-left:32px;text-indent:-32px;font-size:16px}
+footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;color:var(--muted);font-size:15px}
+
+/* SVG drawing styles */
+.wall{fill:none;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.thin{fill:none;stroke:var(--ink);stroke-width:1.5}
+.room{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
+.hall{fill:var(--paper2)}
+.lbl{font-family:"Kalam",cursive;font-size:17px;fill:var(--ink)}
+.lbl-s{font-family:"Kalam",cursive;font-size:14px;fill:var(--muted)}
+.lbl-b{font-family:"Kalam",cursive;font-size:15px;fill:var(--bad);font-weight:700}
+.lbl-g{font-family:"Kalam",cursive;font-size:15px;fill:var(--good);font-weight:700}
+.m-bad{fill:var(--bad)} .m-good{fill:var(--good)} .s-bad{stroke:var(--bad)} .s-good{stroke:var(--good)}
+.f-bad{fill:var(--bad-soft)} .f-mid{fill:var(--mid-soft)} .f-good{fill:var(--good-soft)}
+.stairs{fill:url(#hatch);stroke:var(--ink);stroke-width:1.5}
+.rough{filter:url(#rough)}
+.door-gap{stroke:var(--paper2);stroke-width:6}
+</style>
+</head>
+<body>
+
+<!-- shared SVG defs: sketchy line filter + stair hatch -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="rough"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.6"/></filter>
+    <pattern id="hatch" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="var(--paper)"/><line x1="0" y1="0" x2="0" y2="12" stroke="var(--ink)" stroke-width="1.2"/></pattern>
+    <pattern id="hatchH" width="12" height="12" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="var(--paper)"/><line x1="0" y1="0" x2="12" y2="0" stroke="var(--ink)" stroke-width="1.2"/></pattern>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--bad)"/></marker>
+    <radialGradient id="glow"><stop offset="0" stop-color="#ffd76a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd76a" stop-opacity="0"/></radialGradient>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Andrew Choi · Design Studio B · HW2 + HW3</div>
+    <h1>Mapping Access at Home</h1>
+    <p>I hurt my back right before our campus mapping workshop. The 15-minute walk to RPI became the barrier, so I mapped the one place I could still move through: the shared house I live in. This site holds both assignments: HW2 (map, flows, photos, reflection, field notes) and HW3 (a modified map of three items, design responses, and a written response).</p>
+    <p class="mono">Maps are schematic and not to scale.</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Sections">
+  <div class="wide">
+    <a href="#hw2">HW2</a><a href="#map">Map</a><a href="#flows">User flows</a><a href="#photos">Photos</a><a href="#reflection">Reflection</a><a href="#notes">Field notes</a>
+    <a href="#hw3">HW3</a><a href="#modified">Modified map</a><a href="#items">3 items</a><a href="#response">Written response</a><a href="#cited">Works cited</a>
+  </div>
+</nav>
+
+<!-- ================= HW2 ================= -->
+<section id="hw2" class="wrap part">
+  <div class="kicker">Homework 2</div>
+  <h2 style="margin-top:8px">A house measured by a hurt back</h2>
+</section>
+
+<section id="map" class="wide">
+  <h3>Map 1: Ground floor + basement</h3>
+  <figure class="map">
+    <svg viewBox="0 0 900 640" role="img" aria-labelledby="g1t">
+      <title id="g1t">Ground floor plan showing front door, three staircases, shared restroom, rooms, common area and back door</title>
+      <g class="rough">
+        <rect class="hall" x="60" y="40" width="780" height="440"/>
+        <!-- rooms -->
+        <rect class="room" x="60" y="40" width="140" height="145"/><text class="lbl" x="95" y="118">Room 3</text>
+        <rect class="room" x="60" y="185" width="140" height="145"/><text class="lbl" x="95" y="262">Room 2</text>
+        <rect class="room" x="60" y="330" width="140" height="150"/><text class="lbl" x="95" y="410">Room 1</text>
+        <rect class="room" x="560" y="270" width="280" height="210"/><text class="lbl" x="620" y="370">Rooms 4–6</text><text class="lbl-s" x="606" y="394">(not mapped in detail)</text>
+        <rect class="room" x="430" y="390" width="130" height="90"/><text class="lbl" x="440" y="425">Shared</text><text class="lbl" x="440" y="447">restroom</text><text class="lbl-s" x="440" y="468">all-gender</text>
+        <!-- stairs -->
+        <rect class="stairs" x="280" y="390" width="75" height="90"/><text class="lbl" x="290" y="382">A ↑ 2F</text>
+        <rect class="stairs" x="355" y="390" width="75" height="90" style="fill:url(#hatchH)"/><text class="lbl" x="360" y="382">B ↓ base.</text>
+        <rect class="stairs" x="280" y="40" width="100" height="100"/><text class="lbl" x="292" y="160">C ↑ 2F</text>
+        <!-- common area -->
+        <text class="lbl" x="520" y="120">Common area</text>
+        <line class="thin" x1="560" y1="40" x2="640" y2="40" style="stroke-width:6;stroke:var(--paper2)"/>
+        <line class="thin" x1="560" y1="34" x2="640" y2="34"/><text class="lbl-s" x="540" y="28">curtained glass door</text>
+        <!-- outer wall -->
+        <rect class="wall" x="60" y="40" width="780" height="440"/>
+      </g>
+      <!-- front door -->
+      <line class="door-gap" x1="212" y1="480" x2="268" y2="480"/>
+      <path d="M212 480 L212 430" class="thin s-bad" style="stroke-width:3"/>
+      <path d="M212 430 A50 50 0 0 1 262 480" class="thin" stroke-dasharray="4 4"/>
+      <text class="lbl-b" x="160" y="510">FRONT DOOR</text>
+      <text class="lbl-s" x="120" y="532">heavy · closer · keypad · "shut tight" sign</text>
+      <text class="lbl-s" x="120" y="552">no address visible</text>
+      <circle cx="240" cy="500" r="26" fill="url(#glow)"/><text class="lbl-s" x="270" y="510">motion light</text>
+      <!-- back door -->
+      <line class="door-gap" x1="840" y1="150" x2="840" y2="200"/>
+      <path d="M840 150 L800 150" class="thin" style="stroke-width:3"/>
+      <text class="lbl" x="752" y="230">BACK DOOR</text><text class="lbl-s" x="700" y="252">mail · address on paper</text>
+      <!-- route arrows -->
+      <path d="M240 470 L240 260" class="thin" marker-end="url(#arr)" stroke-dasharray="6 5"/>
+      <text class="lbl-s" x="214" y="240" transform="rotate(-90 214 240)">hallway</text>
+      <path d="M240 455 L300 455" class="thin" marker-end="url(#arr)"/>
+      <path d="M240 175 L290 140" class="thin" marker-end="url(#arr)"/>
+      <!-- basement inset -->
+      <g class="rough">
+        <rect class="room" x="560" y="540" width="280" height="80" style="fill:var(--paper2)"/>
+        <rect class="stairs" x="560" y="540" width="70" height="80" style="fill:url(#hatchH)"/>
+      </g>
+      <text class="lbl" x="650" y="585">Basement (via stair B)</text>
+      <path d="M392 480 C 400 560, 480 580, 556 580" class="thin" marker-end="url(#arr)" stroke-dasharray="4 4"/>
+    </svg>
+    <figcaption>Room numbers on the ground floor are approximate. Every way up or down is stairs. The only shared restroom is down here, but bedrooms with no bathroom are upstairs.</figcaption>
+  </figure>
+
+  <h3>Map 2: Second floor</h3>
+  <figure class="map">
+    <svg viewBox="0 0 900 480" role="img" aria-labelledby="g2t">
+      <title id="g2t">Second floor plan showing rooms 7 to 11, bathrooms, stairs A and C, a chair and a plywood patch</title>
+      <g class="rough">
+        <rect class="hall" x="60" y="40" width="780" height="400"/>
+        <rect class="room" x="60" y="40" width="140" height="400" style="fill:var(--paper2)"/><text class="lbl-s" x="80" y="245">other / storage</text>
+        <rect class="stairs" x="280" y="40" width="100" height="160"/><text class="lbl" x="296" y="225">C</text>
+        <rect class="room" x="380" y="40" width="150" height="160"/><text class="lbl" x="420" y="110">Room 7</text>
+        <rect class="room" x="530" y="40" width="150" height="160"/><text class="lbl" x="570" y="110">Room 8</text>
+        <rect class="room" x="680" y="40" width="160" height="160"/><text class="lbl" x="725" y="110">Room 9</text>
+        <rect class="stairs" x="280" y="260" width="150" height="180"/><text class="lbl" x="300" y="252">A</text>
+        <rect class="room" x="430" y="260" width="180" height="180"/><text class="lbl" x="470" y="345">Room 11</text><text class="lbl-s" x="485" y="368">(mine)</text>
+        <rect class="room" x="610" y="260" width="230" height="180"/><text class="lbl" x="690" y="345">Room 10</text>
+        <!-- private baths -->
+        <rect class="room f-good" x="480" y="160" width="50" height="40"/><text class="lbl-s" x="484" y="186">bath</text>
+        <rect class="room f-good" x="630" y="160" width="50" height="40"/><text class="lbl-s" x="634" y="186">bath</text>
+        <rect class="room f-good" x="560" y="260" width="50" height="40"/><text class="lbl-s" x="564" y="286">bath</text>
+        <!-- shared bath between 9 and 10 -->
+        <rect class="room f-mid" x="790" y="200" width="50" height="60"/><text class="lbl-s" x="793" y="235">bath</text>
+        <rect class="wall" x="60" y="40" width="780" height="400"/>
+      </g>
+      <text class="lbl-s" x="560" y="232">long, narrow hallway</text>
+      <!-- chair -->
+      <rect x="236" y="150" width="28" height="28" rx="3" class="thin" style="fill:var(--good-soft);stroke:var(--good)"/><text class="lbl-g" x="214" y="140">chair = rest</text>
+      <!-- plywood -->
+      <rect x="286" y="262" width="60" height="12" class="m-bad"/><text class="lbl-b" x="290" y="470">plywood patch on railing</text>
+      <path d="M316 448 L316 280" class="thin s-bad" marker-end="url(#arrB)"/>
+      <text class="lbl-g" x="600" y="472" style="font-size:13px">handrails on both sides of every stair</text>
+    </svg>
+    <div class="legend"><span style="--c:var(--good-soft)">private bathroom (rooms 7, 8, 11)</span><span style="--c:var(--mid-soft)">shared bathroom between 9 and 10</span><span style="--c:var(--bad)">quick-fix repair</span></div>
+  </figure>
+
+  <h3>Map 3: House to campus</h3>
+  <figure class="map">
+    <svg viewBox="0 0 900 260" role="img" aria-labelledby="g3t">
+      <title id="g3t">Diagram of the walk from the house to RPI: more than 15 minutes through a dark area</title>
+      <rect x="0" y="0" width="900" height="260" fill="var(--night)" rx="4" opacity=".92"/>
+      <circle cx="90" cy="150" r="70" fill="url(#glow)"/>
+      <rect x="62" y="122" width="56" height="50" fill="#f6f3ec"/><path d="M56 124 L90 96 L124 124" fill="#f6f3ec"/>
+      <text class="lbl" x="58" y="205" style="fill:#f6f3ec">my house</text>
+      <path d="M130 150 C 260 90, 340 210, 470 150 S 680 100, 760 140" fill="none" stroke="#f6f3ec" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+      <text class="lbl-s" x="270" y="80" style="fill:#c9c3b8">dark street · I don't like walking it alone</text>
+      <text class="mono" x="440" y="210" style="fill:#c9c3b8;font-size:13px">15+ minutes on foot</text>
+      <rect x="770" y="90" width="100" height="100" rx="8" fill="#f6f3ec"/><text class="lbl" x="800" y="146" style="fill:#1d1b18">RPI</text>
+      <text class="lbl-b" x="620" y="240" style="fill:#fb923c">with my injury: not accessible</text>
+    </svg>
+    <figcaption>Not a street map. Distance is shown as time and how it feels, which is what decided whether I could reach campus.</figcaption>
+  </figure>
+</section>
+
+<section id="flows" class="wide">
+  <h3>Sketches / user flows</h3>
+  <p class="mono" style="margin-bottom:24px">Color = how hard each step was with my back injury: <span style="color:var(--bad)">hard</span> · <span style="color:var(--mid)">some effort</span> · <span style="color:var(--good)">easy / helps</span></p>
+  <div class="flows">
+    <div class="flow"><h4>1. Coming home to my room (#11)</h4>
+      <ol><li data-e="0">motion light turns on<small>helps at night</small></li><li data-e="3">push heavy front door<small>closer resists, hardest move</small></li><li data-e="1">hallway</li><li data-e="2">stairs A or C<small>both handrails</small></li><li data-e="1">2F hallway</li><li data-e="0">room 11 + private bath</li></ol></div>
+    <div class="flow"><h4>2. A visitor or delivery arriving</h4>
+      <ol><li data-e="1">arrives at front</li><li data-e="3">no address anywhere<small>is this the right house?</small></li><li data-e="2">walks around back</li><li data-e="1">finds paper address by mail</li></ol></div>
+    <div class="flow"><h4>3. A resident with no private bathroom needs a toilet</h4>
+      <ol><li data-e="1">leave room (9, 10 or ground floor)</li><li data-e="2">hallway</li><li data-e="3">or stairs down to shared restroom<small>at night, injured</small></li><li data-e="1">shared bath</li></ol></div>
+    <div class="flow"><h4>4. Getting to campus at night</h4>
+      <ol><li data-e="3">heavy door again</li><li data-e="0">motion light</li><li data-e="3">dark street<small>scary alone</small></li><li data-e="3">15+ min walk<small>pain grows</small></li><li data-e="1">campus</li></ol></div>
+  </div>
+</section>
+
+<section id="photos" class="wide">
+  <h3>Photos: spaces, objects, absences</h3>
+  <div class="photos" style="margin-top:20px">
+    <figure><img src="img/IMG_4393.jpg" alt="Wooden front door with an overhead closer, keypad lock and a handwritten sign" loading="lazy"><figcaption>Front door (inside): overhead closer, keypad, lever handle, sign "Please lock &amp; shut door nice + tight."</figcaption></figure>
+    <figure><img src="img/IMG_4398.jpg" alt="Staircase with a wall handrail and an old balustrade" loading="lazy"><figcaption>Stairs to the second floor with a handrail on each side.</figcaption></figure>
+    <figure><img src="img/IMG_4395.jpg" alt="Stairs going up next to a doorway leading down to the basement" loading="lazy"><figcaption>Stairs up (left) and down to the basement (right). Worn, peeling treads.</figcaption></figure>
+    <figure><img src="img/IMG_4399.jpg" alt="Stair landing with a plywood board tied to the railing" loading="lazy"><figcaption>Plywood patching a gap in the railing. Glass block windows.</figcaption></figure>
+    <figure><img src="img/IMG_4401.jpg" alt="Metal chair at the top of the stairs next to a fire extinguisher" loading="lazy"><figcaption>A chair at the top of the stairs works as a rest spot.</figcaption></figure>
+    <figure><img src="img/IMG_4400.jpg" alt="Long narrow hallway with doors on both sides" loading="lazy"><figcaption>Second floor hallway: long and narrow.</figcaption></figure>
+    <figure><img src="img/IMG_4394.jpg" alt="Hallway with numbered room doors" loading="lazy"><figcaption>Hallway with numbered room doors.</figcaption></figure>
+    <figure><img src="img/IMG_4397.jpg" alt="Open common area leading to a curtained glass door" loading="lazy"><figcaption>Common area and curtained glass door.</figcaption></figure>
+    <figure><img src="img/IMG_4396.jpg" alt="End of a hallway with a closed door" loading="lazy"><figcaption>End of a hallway; closet and door.</figcaption></figure>
+  </div>
+  <p class="mono" style="margin-top:16px">Absences not photographed: an address at the front, any step-free route between floors, street lighting.</p>
+</section>
+
+<section id="reflection" class="wrap">
+  <h3>Reflection</h3>
+  <h4>The space and the change of plans</h4>
+  <p>For HW1 I planned to map three campus buildings: Folsom Library, West Hall, and the Rensselaer Union. A few days before the mapping workshop I hurt my back, and walking to campus stopped being something I could do without pain. My house is more than a 15-minute walk from RPI, and that walk is now the barrier. So I could not join my group, and I mapped the one space I could actually move through: the shared house I live in. It has a ground floor, a basement, and a second floor with numbered rooms (my room is #11). I did this assignment alone.</p>
+  <p>The change ended up being part of the research. The question I started with in HW1 was about the gap between what a space looks like on paper and what it feels like to use when something is "temporarily out of order." This time the thing out of order was my own body, and I got to see that gap from the inside.</p>
+
+  <h4>What I started with</h4>
+  <p>I carried over the guiding questions from my HW1 field notes and used them as my criteria: Can you find the entrance and know you are in the right place without asking? How does moving between floors work, and is there any alternative to stairs? Where are restrooms, and are they shared or private? Who is the space designed around, and who has to work around it? What unwritten rules does the space communicate?</p>
+  <p>My main concern was simple: with an injured back, which parts of my everyday route through the house cost me effort or pain that I never noticed before? I walked every route I normally take (front door to my room, room to the shared restroom, ground floor to basement), took photos, and wrote down what my body had to do at each point: push, pull, lift, grip, wait, or turn around.</p>
+
+  <h4>Standards and evidence</h4>
+  <p>I used three kinds of evidence. First, physical features I could count or describe: number of stairways, handrails, restrooms, and doors with closers. Second, my own body as a measuring tool: whether something hurt, how many times I had to stop, and whether I could do it while carrying something. Third, information and signage: whether the building tells you its address, its rules, or its routes. I rated the house as "medium." There is no step-free way between floors, but every staircase has handrails on both sides, which made the stairs possible for me even on bad days.</p>
+
+  <h4>What I found</h4>
+  <p>The front door was the biggest problem. It has an overhead door closer, a keypad lock, and a handwritten sign that says "Please lock &amp; shut door nice + tight." The closer makes the door heavy, and pushing it with a hurt back is the hardest single movement in my day. The sign is an unwritten rule becoming a written one: the house expects everyone to pull the door shut firmly, which assumes a body that can do that.</p>
+  <p>The address is not visible from the front door at all. The only place it is written is on a piece of paper at the back door, where the mail comes in. A delivery driver, a visitor, or an ambulance crew coming to the front would not be able to confirm they are at the right house. The building is legible to the mail carrier but not to a guest.</p>
+  <p>There are three sets of stairs: one to the right of the front entrance going up to the second floor, one next to it going down to the basement, and another straight back and to the right that also goes up. The treads are worn and the paint is peeling in places. At one landing, a gap in the railing is patched with plywood, which tells me repairs here happen as quick fixes rather than planned updates. There is a metal chair at the top of the stairs. It may not have been put there for this reason, but it works as a place to rest after climbing.</p>
+  <p>Restrooms are unevenly spread. There is one shared all-gender restroom downstairs. Upstairs, rooms 7, 8, and 11 (mine) each have a private bathroom, and there is one more between rooms 9 and 10. Which room you rent decides whether you have to use the stairs or a hallway to reach a toilet. I happen to have a private bathroom, which made my injury much easier to live with.</p>
+  <p>Outside, the house is in a dark area. A motion sensor light turns on over the front door at night, which helps at the door itself, but the street around the house is dark and I feel unsafe walking alone at night. Combined with the distance to campus, my access to RPI depends on the time of day, my back, and whether I have company.</p>
+
+  <h4>Surprises and frustrations</h4>
+  <p>What surprised me most was how much the door mattered compared to the stairs. I expected the stairs to be the barrier, but the handrails made them manageable, while the door has nothing to make it easier. The feature I pass every day and never noticed was the door closer itself. The accessibility feature not meant for me that I use anyway is the second handrail; I always used one side, and now I use both. The frustration was missing the group workshop, which showed me how quickly access to a class activity disappears when getting to campus becomes hard.</p>
+
+  <h4>Spatial distribution and resource allocation</h4>
+  <p>Even inside one house, resources cluster. Private bathrooms are attached to certain rooms, and those rooms likely cost more, so comfort and access are partly bought through rent. The ground floor has the only shared restroom, but the bedrooms without one are upstairs. At the campus scale, students who live farther from RPI, often because housing is cheaper there, pay with time and physical effort every day. Distance is a form of inaccessibility that does not appear on any building's checklist, but it decides who can get to class, office hours, and events when their body changes.</p>
+
+  <h4>If I could redesign it</h4>
+  <p>I would start small: adjust or replace the door closer so the door opens with less force, add a visible house number at the front, and replace the plywood with a real railing. At the neighborhood scale I would add street lighting along the route to campus and look at whether a shuttle or safe-ride option reaches houses this far out.</p>
+</section>
+
+<section id="notes" class="wrap">
+  <h3>Appendix: field notes</h3>
+  <p class="mono">Criteria (from HW1 guiding questions)</p>
+  <ul class="notes">
+    <li>Entrances clearly marked and findable without asking</li>
+    <li>Moving between floors: stairs vs. alternatives, and who chooses which</li>
+    <li>Restroom presence, type (shared / private / all-gender), and location</li>
+    <li>Who the space is designed around and who works around it</li>
+    <li>Unwritten rules and how a newcomer would learn them</li>
+  </ul>
+  <p class="mono">Notes</p>
+  <ul class="notes">
+    <li>Context: back injury, could not attend the group workshop or walk to campus. Mapped my house instead. Worked alone.</li>
+    <li>Overall accessibility: medium. Stairs only, but handrails on both sides.</li>
+    <li>Stairs: enter front door, turn right: stairs up to 2F and stairs down to basement. Go straight in, then right: second staircase up to 2F.</li>
+    <li>Stair condition: worn treads, peeling paint, plywood patch on one railing.</li>
+    <li>Chair at top of 2F stairs works as a rest spot.</li>
+    <li>Signage: none at the front. Address only on paper at the back door where mail comes in.</li>
+    <li>Front door: heavy, overhead closer, keypad, lever handle, handwritten "shut tight" sign. Hard to push with back pain.</li>
+    <li>Restrooms: 1 shared all-gender downstairs. 2F: one between rooms 9 and 10; private bathrooms in rooms 7, 8, and 11 (mine).</li>
+    <li>Night: motion sensor light at the front door. Area around the house is dark; scary to walk alone.</li>
+    <li>Distance: 15+ minute walk to RPI. With my injury, campus is not accessible to me right now.</li>
+  </ul>
+</section>
+
+<!-- ================= HW3 ================= -->
+<section id="hw3" class="wrap part">
+  <div class="kicker">Homework 3</div>
+  <h2 style="margin-top:8px">Mapping effort, fear, and who gets a bathroom</h2>
+  <p>A floor plan shows walls and doors as if every body meets them the same way. For HW3 I redrew the house in the units I actually experienced it in: force, distance to a toilet, light, and fear. Use the buttons to switch layers.</p>
+</section>
+
+<section id="modified" class="wide">
+  <h3>Modified map: same house, three layers</h3>
+  <figure class="map lm">
+    <div class="toggle" role="radiogroup" aria-label="Map layer">
+      <label><input type="radio" name="layer" value="plan"><span>Plain plan</span></label>
+      <label><input type="radio" name="layer" value="effort" checked><span>Effort / pain</span></label>
+      <label><input type="radio" name="layer" value="toilet"><span>Steps to a toilet</span></label>
+    </div>
+    <svg viewBox="0 0 900 560" role="img" aria-labelledby="m1t">
+      <title id="m1t">Combined two-floor plan with switchable layers for effort and restroom access</title>
+      <text class="mono" x="60" y="26" style="font-size:12px;fill:var(--muted)">GROUND FLOOR</text>
+      <text class="mono" x="480" y="26" style="font-size:12px;fill:var(--muted)">SECOND FLOOR</text>
+      <g class="rough">
+        <!-- ground (left) -->
+        <rect class="hall" x="60" y="40" width="380" height="440"/>
+        <rect class="room" x="60" y="40" width="90" height="140"/><rect class="room" x="60" y="180" width="90" height="140"/><rect class="room" x="60" y="320" width="90" height="160"/>
+        <rect class="stairs" x="200" y="40" width="70" height="90"/><rect class="stairs" x="200" y="400" width="60" height="80"/><rect class="stairs" x="260" y="400" width="60" height="80" style="fill:url(#hatchH)"/>
+        <rect class="room" x="320" y="400" width="120" height="80"/>
+        <rect class="room" x="320" y="230" width="120" height="170"/>
+        <rect class="wall" x="60" y="40" width="380" height="440"/>
+        <!-- second (right) -->
+        <rect class="hall" x="480" y="40" width="380" height="440"/>
+        <rect class="stairs" x="480" y="40" width="70" height="170"/>
+        <rect class="room" x="550" y="40" width="100" height="170"/><rect class="room" x="650" y="40" width="100" height="170"/><rect class="room" x="750" y="40" width="110" height="170"/>
+        <rect class="stairs" x="480" y="270" width="90" height="210"/>
+        <rect class="room" x="570" y="270" width="140" height="210"/><rect class="room" x="710" y="270" width="150" height="210"/>
+        <rect class="room" x="820" y="210" width="40" height="60"/>
+        <rect class="wall" x="480" y="40" width="380" height="440"/>
+      </g>
+      <!-- base labels -->
+      <g class="lbl-s">
+        <text x="78" y="115">Rm 3</text><text x="78" y="255">Rm 2</text><text x="78" y="405">Rm 1</text>
+        <text x="215" y="150">C ↑</text><text x="214" y="395">A ↑</text><text x="272" y="395">B ↓</text>
+        <text x="330" y="445">shared WC</text><text x="335" y="320">Rms 4–6</text>
+        <text x="585" y="130">Rm 7</text><text x="685" y="130">Rm 8</text><text x="785" y="130">Rm 9</text>
+        <text x="595" y="380">Rm 11 (me)</text><text x="750" y="380">Rm 10</text><text x="822" y="245">WC</text>
+      </g>
+      <line class="door-gap" x1="160" y1="480" x2="200" y2="480"/><text class="lbl-s" x="140" y="505">front door</text>
+
+      <!-- Layer: plain -->
+      <g class="layer l-plan"><text class="lbl-s" x="60" y="540">Plain plan: every door, stair and room drawn with the same line weight.</text></g>
+
+      <!-- Layer: effort -->
+      <g class="layer l-effort">
+        <circle cx="180" cy="478" r="46" class="f-bad"/><circle cx="180" cy="478" r="22" class="f-bad"/>
+        <text class="lbl-b" x="230" y="540">hardest: push the front door</text>
+        <rect x="200" y="40" width="70" height="90" class="f-mid"/><rect x="200" y="400" width="60" height="80" class="f-mid"/>
+        <rect x="480" y="40" width="70" height="170" class="f-mid"/><rect x="480" y="270" width="90" height="210" class="f-mid"/>
+        <text class="lbl" x="200" y="190" style="fill:var(--mid);font-weight:700">stairs: medium</text><text class="lbl-s" x="200" y="210">(handrails both sides)</text>
+        <rect x="486" y="272" width="56" height="10" class="m-bad"/><text class="lbl-b" x="560" y="540">plywood = unsure grip</text>
+        <circle cx="565" cy="225" r="14" class="f-good" stroke="var(--good)"/><text class="lbl-g" x="586" y="232">chair: rest</text>
+        <rect x="570" y="270" width="140" height="210" class="f-good"/><text class="lbl-g" x="590" y="410">rest + own bath</text>
+        <path d="M180 470 L180 300 L215 135" class="thin s-bad" stroke-width="2.5" marker-end="url(#arrB)" stroke-dasharray="7 5"/>
+      </g>
+
+      <!-- Layer: toilet access -->
+      <g class="layer l-toilet">
+        <rect x="550" y="40" width="200" height="170" class="f-good"/><rect x="570" y="270" width="140" height="210" class="f-good"/>
+        <rect x="710" y="270" width="150" height="210" class="f-mid"/><rect x="750" y="40" width="110" height="170" class="f-mid"/>
+        <rect x="60" y="40" width="90" height="440" class="f-mid"/><rect x="320" y="230" width="120" height="170" class="f-mid"/>
+        <rect x="320" y="400" width="120" height="80" class="f-good" stroke="var(--good)" stroke-width="2"/>
+        <rect x="820" y="210" width="40" height="60" class="f-good" stroke="var(--good)" stroke-width="2"/>
+        <text class="lbl-g" x="560" y="232">0 steps: private bath (7, 8, 11)</text>
+        <text class="lbl" x="620" y="540" style="fill:var(--mid);font-weight:700">hallway trip: 9, 10, ground floor</text>
+        <text class="lbl-b" x="60" y="540">no toilet on 2F west side: stairs at night</text>
+      </g>
+    </svg>
+    <div class="legend"><span style="--c:var(--bad-soft)">costs effort / pain</span><span style="--c:var(--mid-soft)">some effort / hallway trip</span><span style="--c:var(--good-soft)">easy / helps</span></div>
+    <figcaption>The plain plan treats the front door and my bedroom as equal lines. The effort layer shows the door as the biggest barrier and the stairs as manageable because of the handrails. The toilet layer shows that bathroom access is decided by which room you rent.</figcaption>
+  </figure>
+
+  <h3>Detail: the threshold</h3>
+  <figure class="map">
+    <svg viewBox="0 0 900 460" role="img" aria-labelledby="m2t">
+      <title id="m2t">Elevation drawing of the front door with its closer, keypad, sign and missing address</title>
+      <g class="rough">
+        <rect x="300" y="40" width="200" height="380" fill="var(--paper)" class="wall"/>
+        <rect x="335" y="90" width="130" height="120" class="thin" style="fill:var(--paper2)"/>
+        <rect x="380" y="235" width="44" height="54" class="thin"/><text class="lbl-s" x="372" y="306" style="font-size:11px">"shut tight"</text>
+        <rect x="320" y="240" width="14" height="24" class="thin" style="fill:var(--ink)"/>
+        <path d="M322 270 L352 278" class="wall"/>
+        <path d="M410 54 L490 54 L470 40" class="wall"/>
+      </g>
+      <path d="M260 290 L232 290" class="thin s-bad" stroke-width="3"/>
+      <path d="M150 290 L280 290" class="thin s-bad" stroke-width="6" marker-end="url(#arrB)"/>
+      <text class="lbl-b" x="60" y="275">my push</text>
+      <path d="M560 54 L510 54" class="thin" marker-end="url(#arr)"/><text class="lbl" x="568" y="60">closer: pushes back</text>
+      <path d="M560 150 C 480 130, 470 250, 426 258" class="thin" marker-end="url(#arr)"/><text class="lbl" x="568" y="155">handwritten rule</text><text class="lbl-s" x="568" y="176">assumes a body that can pull hard</text>
+      <path d="M560 240 C 470 300, 380 300, 338 262" class="thin" marker-end="url(#arr)"/><text class="lbl" x="568" y="245">keypad + lever</text><text class="lbl-s" x="568" y="266">(lever handle is the easy part)</text>
+      <rect x="160" y="80" width="90" height="56" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="6 5"/>
+      <text class="lbl-b" x="182" y="116">#?</text><text class="lbl-s" x="140" y="160">no house number</text>
+      <circle cx="400" cy="20" r="34" fill="url(#glow)"/>
+      <text class="lbl-s" x="440" y="22">motion light</text>
+    </svg>
+    <figcaption>The door does three jobs (security, heat, privacy) and puts all of their cost on whoever pushes it.</figcaption>
+  </figure>
+
+  <h3>Detail: the route at night</h3>
+  <figure class="map lm">
+    <div class="toggle" role="radiogroup" aria-label="Time of day">
+      <label><input type="radio" name="tod" value="day"><span>Day</span></label>
+      <label><input type="radio" name="tod" value="night" checked><span>Night</span></label>
+    </div>
+    <svg viewBox="0 0 900 300" role="img" aria-labelledby="m3t">
+      <title id="m3t">Timeline of the 15-minute walk showing light level and fear rising at night</title>
+      <defs>
+        <linearGradient id="nightG" x1="0" x2="1"><stop offset="0" stop-color="#ffd76a" stop-opacity=".55"/><stop offset=".12" stop-color="#22252e"/><stop offset=".88" stop-color="#22252e"/><stop offset="1" stop-color="#ffd76a" stop-opacity=".45"/></linearGradient>
+      </defs>
+      <g class="layer l-day"><rect x="60" y="60" width="780" height="120" rx="6" fill="#f3e3a6" opacity=".55"/><text class="lbl" x="80" y="215">Day: long and painful, but I can do it.</text>
+        <path d="M60 165 C 300 160, 560 150, 840 140" fill="none" stroke="var(--mid)" stroke-width="4"/></g>
+      <g class="layer l-night"><rect x="60" y="60" width="780" height="120" rx="6" fill="url(#nightG)"/>
+        <path d="M60 165 C 120 165, 160 90, 260 80 S 700 70, 760 75 C 800 80, 820 150, 840 160" fill="none" stroke="#fb923c" stroke-width="4"/>
+        <text class="lbl-b" x="300" y="105" style="fill:#fb923c">fear</text>
+        <text class="lbl" x="80" y="215">Night: the motion light covers only the first few steps. I stay home.</text></g>
+      <line x1="60" y1="190" x2="840" y2="190" class="thin"/>
+      <g class="mono" style="font-size:12px;fill:var(--muted)">
+        <text x="52" y="250">0</text><text x="248" y="250">4</text><text x="446" y="250">8</text><text x="640" y="250">12</text><text x="820" y="250">15+ min</text>
+      </g>
+      <text class="lbl" x="56" y="50">home</text><text class="lbl" x="810" y="50">RPI</text>
+      <text class="lbl-s" x="60" y="285">line = how unsafe it feels / how much it hurts</text>
+    </svg>
+  </figure>
+</section>
+
+<section id="items" class="wrap">
+  <h3>Three items: what they do and a design response</h3>
+  <div class="item">
+    <h4>1. The threshold: front door and missing address</h4>
+    <p><b>What it does.</b> The heavy door with an overhead closer and keypad keeps the house secure and keeps heat in. The handwritten sign turns that into a rule for people: shut it tight. The missing address means the house only identifies itself at the back, to the mail carrier.</p>
+    <p><b>Design response.</b> Adjust the closer to a lower opening force or add a push-button opener. Put a lit house number at the front, next to the existing motion light so they share power. Replace the sign with a latch that closes on its own, so security no longer depends on everyone pulling hard.</p>
+  </div>
+  <div class="item i2">
+    <h4>2. Vertical circulation: stairs, rails, restrooms</h4>
+    <p><b>What it does.</b> Three staircases connect three levels with no step-free alternative. The handrails make the stairs usable for a body like mine right now. Private bathrooms belong to specific rooms and the shared restroom is downstairs, so where you sleep decides how often you climb.</p>
+    <p><b>Design response.</b> Replace the plywood with a proper railing, repair the treads, and add contrasting edges on each step. Make the chair at the top of the stairs an intentional rest point. In the lease, let residents request a room near a bathroom or on the ground floor when they are injured or disabled, even temporarily.</p>
+  </div>
+  <div class="item i3">
+    <h4>3. The route: house to campus at night</h4>
+    <p><b>What it does.</b> The 15-minute walk and the dark street decide when I can reach campus and whether I go alone. The motion light helps for the last few feet and leaves the street dark.</p>
+    <p><b>Design response.</b> The counter-map above, drawn in fear and effort instead of distance. As a proposal: pedestrian lighting along the route, and connecting off-campus houses to a campus shuttle or safe-ride stop.</p>
+  </div>
+</section>
+
+<section id="response" class="wrap">
+  <h3>Written response</h3>
+  <p>In HW2 I mapped my house after a back injury made the walk to campus too painful. For HW3 I wanted to map differently. A standard floor plan shows walls, doors, and stairs as fixed objects. It does not show that the front door is the hardest part of my day, that the stairs are fine because of the handrails, or that the street outside is scary at night. So my modified map measures effort, pain, light, and fear instead of only distance. This follows the idea in <i>Counter Mapping</i>, where Zuni artists make maps that show what the land means to the people who live on it instead of the borders drawn by someone else. My map is much smaller in scale, but it uses the same move: the person using the space decides what gets mapped.</p>
+  <h4>Infrastructure beyond the objects</h4>
+  <p>The door, the stairs, and the dark street were all shaped by things that are not physical objects. The biggest one is law. The ADA's public accommodation rules do not cover private homes, so a house like mine has no requirement to be accessible. The Fair Housing Act requires accessible design features in new multifamily buildings, but only for buildings first occupied after March 1991. Older houses like this one are exempt. Under the same law a tenant can ask for a "reasonable modification," but usually has to pay for it. The law treats access in old housing as a private problem for the disabled person to solve and fund.</p>
+  <p>Age and money also prevent change. Troy has a lot of old housing, and older houses get repaired with quick fixes, like the plywood on my stair railing. A landlord has little reason to adjust a door closer or add a ramp when the next tenant is probably a young, non-disabled student. That expectation becomes a loop: the house is built for a certain body, so people with other bodies don't move in, so there is no pressure to change it.</p>
+  <p>The campus scale matters too. Many RPI students, especially upperclassmen, live off campus in older houses in Troy, and rent tends to be cheaper the farther out you go. Distance and building age end up tied to money. A student who cannot afford housing close to campus pays in time and physical effort, and if they are disabled or injured, they may lose access to campus altogether. This can push future students away from RPI. A prospective student who uses a wheelchair, or who has chronic pain, has to ask not only whether classrooms are accessible but whether they can afford a place to live that they can actually get into and out of.</p>
+  <h4>Stories told about these spaces</h4>
+  <p>Aimi Hamraie, in the introduction to <i>Building Access</i>, argues that the design of space carries a story about who is expected to be there. Hamraie calls this the "normate template," the assumed average body that buildings are designed around. My house tells that story clearly. The handwritten sign assumes everyone can pull the door hard. The stairs assume everyone can climb. The address on the back door assumes the only stranger who needs to find the house is the mail carrier. The story of off-campus student housing is that it is temporary and that the people in it are young and healthy, so accessibility is not needed. My injury made me step outside that story for a few weeks, and the house suddenly felt designed for someone else.</p>
+  <h4>What these infrastructures enable and disable</h4>
+  <p>The infrastructures in my house enable independence for some people and take it away from others. The handrails let me keep living upstairs. The private bathroom in my room let me rest without climbing stairs at night. The heavy door kept me from coming and going easily, and I started planning trips to avoid opening it more than necessary. The dark street affected me emotionally as well as physically: I felt fear, and fear changed my behavior, so I stayed home at night instead of going to campus. Over time this shapes knowledge and belonging too. When I could not join the group workshop, I lost the shared knowledge my classmates built together. Access is not only about whether a body fits through a door. It also decides who gets to be part of a community, a class, or a campus.</p>
+  <p>Mapping my home showed me that inaccessibility is often made of small things that add up: a door closer, a missing address, a dark block, a rent price. None of them looks like a barrier on its own, which is why they rarely get fixed. A map that shows force, fear, and distance makes them visible, and that is the first step toward changing them.</p>
+</section>
+
+<section id="cited" class="wrap cite">
+  <h3>Works cited</h3>
+  <p>Americans with Disabilities Act of 1990, Title III, 42 U.S.C. § 12181–12189.</p>
+  <p>Anti-Eviction Mapping Project. <a href="https://www.antievictionmap.com/">antievictionmap.com</a>.</p>
+  <p>Counter Cartographies Collective. <a href="https://www.countercartographies.org/">countercartographies.org</a>.</p>
+  <p>Fair Housing Act, 42 U.S.C. § 3604(f). U.S. Department of Housing and Urban Development, <i>Fair Housing Act Design Manual</i>.</p>
+  <p>Hamraie, Aimi. <i>Building Access: Universal Design and the Politics of Disability</i>. University of Minnesota Press, 2017.</p>
+  <p>Loften, Adam, and Emmanuel Vaughan-Lee, directors. <i>Counter Mapping</i>. Emergence Magazine, 2018. <a href="https://emergencemagazine.org/film/counter-mapping/">emergencemagazine.org</a>.</p>
+  <p><i>This Is Not an Atlas</i>. <a href="https://notanatlas.org/">notanatlas.org</a>.</p>
+</section>
+
+<footer><div class="wrap">Andrew Choi · Design Studio B, RPI · 2026</div></footer>
+</body>
+</html>
