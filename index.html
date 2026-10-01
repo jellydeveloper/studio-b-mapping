@@ -99,7 +99,25 @@
   footer{ margin-top:70px; padding-top:22px; border-top:1px solid var(--line); color:var(--ink-faint); font-family:'IBM Plex Mono',monospace; font-size:12.5px; }
 
   /* plan drawings */
-  .pw{ fill:none; stroke:var(--ink); stroke-width:2; stroke-linejoin:round; }
+  .pw{ fill:none; stroke:var(--ink); stroke-width:4; stroke-linejoin:miter; }
+  .pf{ fill:var(--card); } .po{ fill:none; stroke:var(--ink); stroke-width:1.5; } .pd{ fill:none; stroke:var(--ink); stroke-width:1.2; }
+  .sketches{ display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-top:16px; }
+  .sketches figure{ margin:0; } .sketches img{ display:block; width:100%; height:260px; object-fit:contain; background:var(--card); border:1px solid var(--line); }
+  .sketches figcaption{ font-size:13px; color:var(--ink-faint); margin-top:8px; }
+  .morph-btn{ font-family:"IBM Plex Mono",monospace; font-size:12.5px; text-transform:uppercase; color:var(--ink); background:none; border:1px solid var(--ink); padding:6px 12px; cursor:pointer; }
+  .morph-btn:hover{ background:var(--fill); }
+  .ring{ fill:none; stroke:var(--ink); stroke-opacity:.18; stroke-dasharray:2 5; }
+  #feltMap .felt-rings{ opacity:0; transition:opacity .8s; } #feltMap.felt .felt-rings{ opacity:1; }
+  #feltMap .real-frame{ transition:opacity .8s; } #feltMap.felt .real-frame{ opacity:0; }
+  .node{ transition:transform 1.4s cubic-bezier(.65,0,.35,1); } .node text{ font-size:13px; }
+  .node.ok circle{ fill:var(--ok-ink); } .node.mid circle{ fill:var(--mid-ink); } .node.no circle{ fill:var(--no-ink); } .node.me circle{ fill:var(--accent); } .node.me text{ font-weight:600; }
+  .day-controls{ display:flex; gap:14px; align-items:center; margin-bottom:12px; }
+  .day-controls input{ flex:1; accent-color:var(--accent); }
+  .tm-out{ font-family:"IBM Plex Mono",monospace; font-size:13px; min-width:72px; text-align:right; }
+  .stop circle{ fill:var(--ink); } .stop text{ font-size:12.5px; }
+  #daySvg.night .stop text, #daySvg.night #dayPain{ fill:#E6EBF0; } #daySvg.night .stop circle{ fill:#E6EBF0; }
+  .day-note{ font-family:"Newsreader",serif; font-style:italic; font-size:18px; min-height:3.2em; margin:14px 0 0; color:var(--ink); max-width:60ch; }
+  @media (prefers-reduced-motion: reduce){ .node, #feltMap .felt-rings, #feltMap .real-frame{ transition:none; } }
   .pr{ fill:var(--card); stroke:var(--ink); stroke-width:1; }
   .ph{ fill:var(--fill); }
   .pb{ fill:rgba(var(--ink-rgb),.13); stroke:var(--ink); stroke-width:1; }
@@ -146,50 +164,54 @@
     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="rgb(50,64,79)"/></marker>
     <marker id="arrowAccent" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="rgb(52,102,166)"/></marker>
 
-    <!-- ground floor, redrawn from my sketch -->
+    <!-- ground floor, traced from my plan drawing (plan-fl1.png) -->
     <g id="fl1">
-      <polygon class="ph" points="150,30 610,30 610,670 230,670 230,340 150,340"/>
-      <rect class="pr" x="150" y="30" width="95" height="80"/>
-      <rect class="pr" x="410" y="30" width="80" height="40"/><rect class="pr" x="410" y="70" width="80" height="40"/>
-      <rect class="pr" x="150" y="120" width="145" height="210"/>
-      <rect class="pb" x="365" y="205" width="120" height="130"/>
-      <rect class="pr" x="485" y="225" width="110" height="95"/>
-      <rect class="pr" x="550" y="325" width="55" height="80"/>
-      <rect class="pr" x="490" y="410" width="120" height="85"/>
-      <rect class="pr" x="230" y="410" width="60" height="85"/>
-      <path class="pr" d="M365 400 L490 400"/>
-      <rect class="ps" x="420" y="150" width="100" height="50"/>
-      <rect class="ps" x="470" y="535" width="65" height="55"/>
-      <rect class="psd" x="470" y="615" width="65" height="50"/>
-      <polygon class="pw" points="150,30 610,30 610,670 230,670 230,340 150,340"/>
-      <line class="gap" x1="297" y1="670" x2="363" y2="670"/>
-      <line class="gap" x1="300" y1="30" x2="355" y2="30"/>
-      <path class="ld" stroke-dasharray="3 4" d="M295 525 Q330 480 362 470"/>
-      <text class="t" x="166" y="76">Room 4</text><text class="t" x="445" y="56">5</text><text class="t" x="445" y="96">6</text>
-      <text class="t" x="196" y="230">Kitchen</text><text class="t" x="512" y="277">Room 2</text>
-      <text class="ts" x="565" y="370">WC</text><text class="t" x="520" y="457">Room 3</text><text class="ts" x="240" y="457">Rm 1</text>
+      <rect class="ph" x="8" y="10" width="574" height="752"/>
+      <rect class="pf" x="8" y="10" width="149" height="148"/>
+      <rect class="pf" x="337" y="10" width="245" height="150"/>
+      <rect class="pf" x="8" y="158" width="197" height="317"/>
+      <rect class="pf" x="405" y="260" width="177" height="73"/>
+      <rect class="pf" x="520" y="333" width="62" height="137"/>
+      <rect class="pb" x="298" y="262" width="107" height="148"/>
+      <rect class="pf" x="298" y="470" width="114" height="140"/>
+      <rect class="pf" x="412" y="470" width="170" height="140"/>
+      <rect class="pf" x="8" y="475" width="197" height="287"/>
+      <rect class="ps" x="342" y="170" width="155" height="54"/>
+      <rect class="ps" x="385" y="617" width="155" height="53"/>
+      <rect class="psd" x="385" y="683" width="155" height="54"/>
+      <rect class="po" x="8" y="10" width="574" height="752"/>
+      <path class="pw" d="M157 10 V158 H8 M337 10 V160 H582 M205 258 V408 M298 262 V410 H405 V260 H582 M405 333 H582 M520 333 V470 M298 470 H582 M298 470 V610 H582 M412 470 V610 M8 475 H205 V762"/>
+      <line class="gap" x1="207" y1="10" x2="296" y2="10"/>
+      <line class="gap" x1="207" y1="762" x2="296" y2="762"/>
+      <path class="pd" d="M207 10 V94 M207 94 A86 86 0 0 0 293 10"/>
+      <path class="pd" d="M210 762 V676 M210 676 A86 86 0 0 1 296 762"/>
+      <text class="t" x="52" y="88">Room 4</text><text class="t" x="430" y="88">Rooms 5, 6</text>
+      <text class="t" x="80" y="320">Kitchen</text><text class="t" x="470" y="301">Room 2</text>
+      <text class="ts" x="532" y="406">WC</text><text class="t" x="472" y="545">Room 3</text><text class="t" x="78" y="620">Room 1</text>
     </g>
 
-    <!-- second floor, redrawn from my sketch -->
+    <!-- second floor, traced from my plan drawing (plan-fl2.png) -->
     <g id="fl2">
-      <rect class="ph" x="440" y="180" width="105" height="595"/><rect class="ph" x="545" y="675" width="55" height="65"/><rect class="ph" x="545" y="150" width="15" height="35"/>
-      <rect class="pr" x="250" y="30" width="185" height="310"/>
-      <rect class="pr" x="435" y="30" width="130" height="150"/>
-      <rect class="pr" x="250" y="345" width="195" height="265"/>
-      <rect class="pr" x="545" y="240" width="105" height="175"/>
-      <rect class="pr" x="545" y="415" width="105" height="45"/>
-      <rect class="pr" x="545" y="460" width="105" height="165"/>
-      <rect class="pr" x="395" y="300" width="40" height="40"/>
-      <rect class="pr" x="525" y="140" width="40" height="40"/>
-      <rect class="pr" x="405" y="345" width="40" height="40"/>
-      <rect class="ps" x="560" y="130" width="85" height="55"/>
-      <rect class="ps" x="600" y="675" width="75" height="65"/>
-      <path class="pw" d="M440 180 L440 775 L545 775 L545 740 L600 740 M600 675 L545 675 L545 625 M545 240 L545 185 L560 185"/>
-      <text class="t" x="312" y="190">Room 8</text><text class="t" x="472" y="100">Room 7</text><text class="t" x="306" y="490">Room 11</text>
-      <text class="t" x="572" y="330">Room 9</text><text class="ts" x="580" y="443">bath</text><text class="t" x="566" y="546">Room 10</text>
-      <text class="ts" x="400" y="325">bath</text><text class="ts" x="530" y="165">bath</text><text class="ts" x="410" y="370">bath</text>
+      <rect class="ph" x="10" y="10" width="552" height="762"/>
+      <rect class="pf" x="10" y="10" width="410" height="87"/>
+      <rect class="pf" x="420" y="10" width="142" height="87"/>
+      <rect class="pf" x="10" y="97" width="192" height="276"/>
+      <rect class="pf" x="10" y="373" width="192" height="56"/>
+      <rect class="pf" x="10" y="429" width="192" height="51"/>
+      <rect class="pf" x="10" y="480" width="192" height="292"/>
+      <rect class="pf" x="340" y="180" width="222" height="208"/>
+      <rect class="pf" x="340" y="388" width="222" height="61"/>
+      <rect class="pf" x="340" y="449" width="222" height="237"/>
+      <rect class="ps" x="422" y="97" width="140" height="65"/>
+      <rect class="ps" x="428" y="692" width="134" height="80"/>
+      <rect class="po" x="10" y="10" width="552" height="762"/>
+      <path class="pw" d="M10 97 H562 M420 10 V97 M202 97 V772 M10 373 H202 M10 429 H202 M10 480 H202 M340 180 H562 M340 180 V686 H562 M340 388 H562 M340 449 H562"/>
+      <text class="t" x="240" y="58">Room 7</text><text class="ts" x="474" y="58">bath</text>
+      <text class="t" x="78" y="240">Room 8</text><text class="ts" x="90" y="406">bath</text><text class="ts" x="90" y="459">bath</text>
+      <text class="t" x="75" y="630">Room 11</text>
+      <text class="t" x="425" y="288">Room 9</text><text class="ts" x="436" y="423">bath</text><text class="t" x="418" y="572">Room 10</text>
     </g>
-  </defs>
+    </defs>
 </svg>
 
 <div class="shell">
@@ -237,6 +259,8 @@
       <a href="#hw2-notes">Field notes</a>
       <span class="label">HW3</span>
       <a href="#hw3-map">Modified map</a>
+      <a href="#felt">Felt distance</a>
+      <a href="#day">One day</a>
       <a href="#hw3-items">Three items</a>
       <a href="#hw3-response">Written response</a>
       <a href="#cited">Works cited</a>
@@ -259,54 +283,60 @@
           <div class="stat"><b>15+</b><span>minutes on foot to campus</span></div>
         </div>
 
-        <h3>Ground floor and basement</h3>
+        <h3>Hand-drawn maps</h3>
+        <p class="measure">My first sketches of each floor, then the cleaner plans I drew on a grid. Everything labeled below comes from these.</p>
+        <div class="sketches">
+          <figure><img src="img/sketch-fl1.png" alt="Rough hand sketch of the ground floor with rooms 1 to 6, kitchen, bathroom, stairs up and down, and the front and back doors" loading="lazy"><figcaption>Sketch, ground floor</figcaption></figure>
+          <figure><img src="img/sketch-fl2.png" alt="Rough hand sketch of the second floor with rooms 7 to 11, a bath, a hallway and two stairs down, with two red dots" loading="lazy"><figcaption>Sketch, second floor. The red dots are the chair and the plywood.</figcaption></figure>
+          <figure><img src="img/plan-fl1.png" alt="Grid plan of the ground floor" loading="lazy"><figcaption>Grid plan, ground floor</figcaption></figure>
+          <figure><img src="img/plan-fl2.png" alt="Grid plan of the second floor" loading="lazy"><figcaption>Grid plan, second floor</figcaption></figure>
+        </div>
+
+        <h3>Ground floor and basement, labeled</h3>
         <figure class="shot"><div class="frame">
-          <svg viewBox="0 -40 900 830" role="img" aria-labelledby="g1t">
-            <title id="g1t">Ground floor: front door at the bottom with stairs A and B to its right, a hallway up the middle to stair C, the kitchen, rooms 1 to 6, a shared restroom, and the back door at the top</title>
+          <svg viewBox="0 -40 900 880" role="img" aria-labelledby="g1t">
+            <title id="g1t">Ground floor: front door at the bottom with stairs A and B to its right, a hallway up the middle to the back door and stair C, the kitchen, rooms 1 to 6, and a shared restroom</title>
             <use href="#fl1"/>
-            <path d="M297 670 L297 628" stroke="var(--no-ink)" stroke-width="3"/>
-            <text class="t tno" x="276" y="706" font-weight="600">Front door</text>
-            <text class="ts" x="276" y="726">heavy, overhead closer, keypad,</text>
-            <text class="ts" x="276" y="744">"shut tight" sign, no address</text>
-            <text class="ts tac" x="380" y="700">motion light</text>
-            <text class="t" x="290" y="-12" font-weight="600">Back door</text><text class="ts" x="372" y="-12">mail comes here, address on paper</text>
-            <path class="rt" d="M330 660 L330 600 L462 590" marker-end="url(#arrowAccent)"/>
-            <path class="rt" d="M330 590 L330 175 L412 175" marker-end="url(#arrowAccent)" stroke-dasharray="6 5"/>
-            <text class="ts" x="322" y="390" transform="rotate(-90 322 390)">hallway</text>
-            <path class="ld" d="M525 175 L632 175"/><text class="t" x="640" y="180">Stair C, up to 2F</text><text class="ts" x="640" y="198">straight in, then right</text>
-            <path class="ld" d="M607 365 L632 365"/><text class="t" x="640" y="361">Shared restroom</text><text class="ts" x="640" y="379">all-gender, between rooms 2 and 3</text>
-            <path class="ld" d="M537 562 L632 562"/><text class="t" x="640" y="567">Stair A, up to 2F</text><text class="ts" x="640" y="585">right of the entrance</text>
-            <path class="ld" d="M537 630 L632 630"/><text class="t" x="640" y="635">Stair B, down to basement</text>
-            <rect class="pr" x="660" y="680" width="200" height="70"/><rect class="psd" x="660" y="680" width="55" height="70"/>
-            <text class="t" x="730" y="720">Basement</text>
-            <path class="ld" d="M535 655 C 580 700, 620 715, 656 715" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+            <path class="rt" d="M254 745 L254 645 L380 645" marker-end="url(#arrowAccent)"/>
+            <path class="rt" d="M254 700 L254 197 L336 197" marker-end="url(#arrowAccent)" stroke-dasharray="6 5"/>
+            <text class="ts" x="246" y="420" transform="rotate(-90 246 420)">hallway</text>
+            <text class="t" x="207" y="-14" font-weight="600">Back door</text><text class="ts" x="285" y="-14">mail comes here; the address is on paper</text>
+            <path class="ld" d="M499 197 L612 197"/><text class="t" x="620" y="202">Stair C, up to 2F</text><text class="ts" x="620" y="220">straight in, then right</text>
+            <path class="ld" d="M584 400 L612 400"/><text class="t" x="620" y="396">Shared restroom</text><text class="ts" x="620" y="414">all-gender, for rooms 1 to 6</text>
+            <path class="ld" d="M542 643 L612 643"/><text class="t" x="620" y="648">Stair A, up to 2F</text><text class="ts" x="620" y="666">right of the entrance</text>
+            <path class="ld" d="M542 710 L612 710"/><text class="t" x="620" y="715">Stair B, down to basement</text>
+            <rect class="pf" x="660" y="752" width="200" height="66" stroke="var(--ink)"/><rect class="psd" x="660" y="752" width="55" height="66"/>
+            <text class="t" x="730" y="790">Basement</text>
+            <path class="ld" d="M540 730 C 590 770, 620 785, 656 785" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+            <text class="t tno" x="120" y="800" font-weight="600">Front door</text>
+            <text class="ts" x="120" y="820">heavy, overhead closer, keypad, "shut tight" sign, no address</text>
+            <text class="ts tac" x="300" y="800">motion light above</text>
           </svg>
         </div>
-          <figcaption class="hero-cap">Redrawn from my hand sketch, not to scale. Blue lines are the two routes I take from the front door. The grey block in the middle is a walled-off section.</figcaption>
+          <figcaption class="hero-cap">Traced from my grid plan. Blue lines are the two routes I take from the front door. The grey block next to the hallway is a closed-off section.</figcaption>
         </figure>
 
-        <h3>Second floor</h3>
+        <h3>Second floor, labeled</h3>
         <figure class="shot"><div class="frame">
-          <svg viewBox="200 0 700 810" role="img" aria-labelledby="g2t">
-            <title id="g2t">Second floor: one long hallway; rooms 7, 8 and 11 have private bathrooms; rooms 9 and 10 share one; stair C at the top and stair A at the bottom</title>
+          <svg viewBox="0 -10 900 800" role="img" aria-labelledby="g2t">
+            <title id="g2t">Second floor: a long hallway; rooms 7, 8 and 11 have their own bathrooms; rooms 9 and 10 share one; stair C at the top right, stair A at the bottom right</title>
             <use href="#fl2"/>
-            <rect x="395" y="300" width="40" height="40" class="fok"/><rect x="525" y="140" width="40" height="40" class="fok"/><rect x="405" y="345" width="40" height="40" class="fok"/>
-            <rect x="545" y="415" width="105" height="45" class="fmid"/>
-            <text class="ts" x="500" y="560" transform="rotate(-90 500 560)">one long, narrow hallway</text>
-            <path class="ld" d="M645 158 L682 158"/><text class="t" x="690" y="163">Stair C, down</text><text class="ts" x="690" y="181">lands by the kitchen side</text>
-            <rect x="547" y="188" width="18" height="18" fill="var(--ok-a)" stroke="var(--ok-ink)"/>
-            <path class="ld" d="M567 197 L682 230"/><text class="t tok" x="690" y="235">Chair</text><text class="ts" x="690" y="253">I rest here after climbing</text>
-            <path class="ld" d="M652 437 L682 437"/><text class="t" x="690" y="442">Bath for rooms 9 and 10</text>
-            <rect x="555" y="666" width="45" height="9" fill="var(--no-ink)"/>
-            <path class="ld" d="M602 670 L682 640"/><text class="t tno" x="690" y="640">Plywood patch</text><text class="ts" x="690" y="658">covering a gap in the railing</text>
-            <text class="t" x="690" y="712">Stair A, down</text><text class="ts" x="690" y="730">to the front entrance</text>
-            <text class="ts" x="690" y="784">Both stairs have a handrail</text><text class="ts" x="690" y="801">on each side.</text>
+            <rect x="420" y="10" width="142" height="87" class="fok"/><rect x="10" y="373" width="192" height="56" class="fok"/><rect x="10" y="429" width="192" height="51" class="fok"/>
+            <rect x="340" y="388" width="222" height="61" class="fmid"/>
+            <text class="ts" x="270" y="470" transform="rotate(-90 270 470)">one long hallway</text>
+            <rect x="380" y="112" width="20" height="20" fill="var(--ok-a)" stroke="var(--ok-ink)"/><text class="ts tok" x="300" y="127">chair</text>
+            <rect x="420" y="700" width="7" height="64" fill="var(--no-ink)"/>
+            <path class="ld" d="M564 130 L612 130"/><text class="t" x="620" y="126">Stair C, down</text><text class="ts" x="620" y="144">I rest on the chair after climbing it</text>
+            <path class="ld" d="M564 418 L612 418"/><text class="t" x="620" y="423">Bath for rooms 9 and 10</text>
+            <path class="ld" d="M424 690 L470 660 L612 660"/><text class="t tno" x="620" y="656">Plywood patch</text><text class="ts" x="620" y="674">covering a gap in the railing</text>
+            <path class="ld" d="M564 735 L612 735"/><text class="t" x="620" y="731">Stair A, down</text><text class="ts" x="620" y="749">to the front entrance</text>
+            <text class="ts" x="620" y="40">Both staircases have a</text><text class="ts" x="620" y="57">handrail on each side.</text>
           </svg>
         </div>
           <div class="key"><span style="--c:var(--ok-a)">private bathroom (rooms 7, 8, 11)</span><span style="--c:var(--mid-a)">shared by rooms 9 and 10</span><span style="--c:var(--no-ink)">quick-fix repair</span></div>
         </figure>
 
-        <h3>User flows</h3>
+<h3>User flows</h3>
         <div class="wrap-table">
         <table class="resp">
           <thead><tr><th>Flow</th><th>Steps</th><th>Hardest point</th></tr></thead>
@@ -397,71 +427,72 @@
       <section class="doc" id="hw3-map">
         <p class="eyebrow label">HW3 · Modified map</p>
         <h2>The same house, drawn by how it felt</h2>
-        <p class="doc-sub">Effort, toilet access, fear</p>
+        <p class="doc-sub">A layered plan, felt distance, one day</p>
 
-        <p class="lede measure" style="color:var(--ink);">For HW3 I took three things from HW2 and mapped them again by how they felt to use: how much effort each spot took, how far each room is from a toilet, and how the walk to campus changes at night.</p>
+        <p class="lede measure" style="color:var(--ink);">For HW3 I took three things from HW2 (the front door, the stairs and restrooms, and the walk to campus) and mapped them three more ways: a plan with layers for effort and toilet access, the house rearranged by how far each place feels, and one day played out hour by hour.</p>
 
+        <h3>Map 1: three items on the plan</h3>
         <figure class="shot lm"><div class="frame">
           <div class="layers" role="radiogroup" aria-label="Map layer">
             <label><input type="radio" name="layer" value="plan">Plain plan</label>
             <label><input type="radio" name="layer" value="effort" checked>Effort and pain</label>
             <label><input type="radio" name="layer" value="toilet">Distance to a toilet</label>
           </div>
-          <svg viewBox="0 0 900 500" role="img" aria-labelledby="m1t">
+          <svg viewBox="0 0 900 480" role="img" aria-labelledby="m1t">
             <title id="m1t">Both floors side by side with switchable layers for effort and toilet access</title>
-            <text class="tm" x="40" y="22">GROUND FLOOR</text>
-            <text class="tm" x="470" y="22">SECOND FLOOR</text>
-            <g transform="translate(-65 19) scale(.7)">
+            <text class="tm" x="34" y="26">GROUND FLOOR</text>
+            <text class="tm" x="376" y="26">SECOND FLOOR</text>
+            <g transform="translate(30 38) scale(.55)">
               <use href="#fl1"/>
               <g class="layer l-effort">
-                <circle cx="330" cy="670" r="70" class="fno"/>
-                <rect x="420" y="150" width="100" height="50" class="fmid"/><rect x="470" y="535" width="65" height="55" class="fmid"/><rect x="470" y="615" width="65" height="50" class="fmid"/>
-                <path d="M330 640 L330 175 L412 175" class="rt" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#arrowAccent)"/>
+                <circle cx="252" cy="762" r="90" class="fno"/>
+                <rect x="342" y="170" width="155" height="54" class="fmid"/><rect x="385" y="617" width="155" height="53" class="fmid"/><rect x="385" y="683" width="155" height="54" class="fmid"/>
+                <path d="M254 740 L254 197 L336 197" class="rt" stroke-width="3" stroke-dasharray="9 7" marker-end="url(#arrowAccent)"/>
               </g>
               <g class="layer l-toilet">
-                <rect x="150" y="30" width="95" height="80" class="fmid"/><rect x="410" y="30" width="80" height="80" class="fmid"/>
-                <rect x="485" y="225" width="110" height="95" class="fmid"/><rect x="490" y="410" width="120" height="85" class="fmid"/><rect x="230" y="410" width="60" height="85" class="fmid"/>
-                <rect x="550" y="325" width="55" height="80" class="fok" stroke="var(--ok-ink)" stroke-width="2"/>
+                <rect x="8" y="10" width="149" height="148" class="fmid"/><rect x="337" y="10" width="245" height="150" class="fmid"/>
+                <rect x="405" y="260" width="177" height="73" class="fmid"/><rect x="412" y="470" width="170" height="140" class="fmid"/><rect x="8" y="475" width="197" height="287" class="fmid"/>
+                <rect x="520" y="333" width="62" height="137" class="fok" stroke="var(--ok-ink)" stroke-width="3"/>
               </g>
             </g>
-            <g transform="translate(320 22) scale(.6)">
+            <g transform="translate(370 36) scale(.55)">
               <use href="#fl2"/>
               <g class="layer l-effort">
-                <rect x="560" y="130" width="85" height="55" class="fmid"/><rect x="600" y="675" width="75" height="65" class="fmid"/>
-                <rect x="250" y="345" width="195" height="265" class="fok"/>
-                <circle cx="556" cy="198" r="16" class="fok" stroke="var(--ok-ink)"/>
-                <rect x="555" y="664" width="45" height="12" fill="var(--no-ink)"/>
+                <rect x="422" y="97" width="140" height="65" class="fmid"/><rect x="428" y="692" width="134" height="80" class="fmid"/>
+                <rect x="10" y="429" width="192" height="343" class="fok"/>
+                <circle cx="390" cy="122" r="22" class="fok" stroke="var(--ok-ink)" stroke-width="2"/>
+                <rect x="418" y="700" width="10" height="64" fill="var(--no-ink)"/>
               </g>
               <g class="layer l-toilet">
-                <rect x="250" y="30" width="185" height="310" class="fok"/><rect x="435" y="30" width="130" height="150" class="fok"/><rect x="250" y="345" width="195" height="265" class="fok"/>
-                <rect x="545" y="240" width="105" height="175" class="fmid"/><rect x="545" y="460" width="105" height="165" class="fmid"/>
-                <rect x="545" y="415" width="105" height="45" class="fok" stroke="var(--ok-ink)" stroke-width="2"/>
+                <rect x="10" y="10" width="552" height="87" class="fok"/><rect x="10" y="97" width="192" height="675" class="fok"/>
+                <rect x="340" y="180" width="222" height="208" class="fmid"/><rect x="340" y="449" width="222" height="237" class="fmid"/>
+                <rect x="340" y="388" width="222" height="61" class="fok" stroke="var(--ok-ink)" stroke-width="3"/>
               </g>
             </g>
             <g class="layer l-plan">
-              <text class="t" x="740" y="60" font-weight="600">Plain plan</text>
-              <text class="ts" x="740" y="84">Every door, stair, and</text><text class="ts" x="740" y="101">room gets the same line.</text>
+              <text class="t" x="710" y="60" font-weight="600">Plain plan</text>
+              <text class="ts" x="710" y="84">Every door, stair, and</text><text class="ts" x="710" y="101">room gets the same line.</text>
             </g>
             <g class="layer l-effort">
-              <text class="t" x="740" y="60" font-weight="600">Effort and pain</text>
-              <text class="t tno" x="740" y="92">Hardest</text><text class="ts" x="740" y="109">pushing the front door</text>
-              <text class="t tmid" x="740" y="143">Medium</text><text class="ts" x="740" y="160">stairs, manageable with</text><text class="ts" x="740" y="177">handrails on both sides</text>
-              <text class="t tok" x="740" y="211">Helps</text><text class="ts" x="740" y="228">the chair at the top of</text><text class="ts" x="740" y="245">stair C, my own bathroom</text>
-              <text class="t tno" x="740" y="279">Red bar</text><text class="ts" x="740" y="296">plywood, I don't trust</text><text class="ts" x="740" y="313">it as a grip</text>
-              <text class="ts tac" x="740" y="347">Blue: my route home</text>
+              <text class="t" x="710" y="60" font-weight="600">Effort and pain</text>
+              <text class="t tno" x="710" y="92">Hardest</text><text class="ts" x="710" y="109">pushing the front door</text>
+              <text class="t tmid" x="710" y="143">Medium</text><text class="ts" x="710" y="160">stairs, manageable with</text><text class="ts" x="710" y="177">a handrail on each side</text>
+              <text class="t tok" x="710" y="211">Helps</text><text class="ts" x="710" y="228">the chair at the top of</text><text class="ts" x="710" y="245">stair C, my own bathroom</text>
+              <text class="t tno" x="710" y="279">Red bar</text><text class="ts" x="710" y="296">plywood, I don't trust</text><text class="ts" x="710" y="313">it as a grip</text>
+              <text class="ts tac" x="710" y="347">Blue: my route home</text>
             </g>
             <g class="layer l-toilet">
-              <text class="t" x="740" y="60" font-weight="600">Distance to a toilet</text>
-              <text class="t tok" x="740" y="92">In the room</text><text class="ts" x="740" y="109">rooms 7, 8, 11</text>
-              <text class="t tmid" x="740" y="143">Down the hall</text><text class="ts" x="740" y="160">rooms 1 to 6 share one WC;</text><text class="ts" x="740" y="177">rooms 9 and 10 share one</text>
-              <text class="ts" x="740" y="211">Which one you get</text><text class="ts" x="740" y="228">depends on the room</text><text class="ts" x="740" y="245">you rent.</text>
+              <text class="t" x="710" y="60" font-weight="600">Distance to a toilet</text>
+              <text class="t tok" x="710" y="92">In the room</text><text class="ts" x="710" y="109">rooms 7, 8, 11</text>
+              <text class="t tmid" x="710" y="143">Down the hall</text><text class="ts" x="710" y="160">rooms 1 to 6 share one WC;</text><text class="ts" x="710" y="177">rooms 9 and 10 share one</text>
+              <text class="ts" x="710" y="211">Which one you get</text><text class="ts" x="710" y="228">depends on the room</text><text class="ts" x="710" y="245">you rent.</text>
             </g>
           </svg>
         </div>
           <figcaption class="hero-cap">Switch layers above the drawing. The plain plan draws the front door and my bedroom door with the same line. The effort layer shows the door as the worst spot, and the toilet layer shows that bathroom access comes with the rent.</figcaption>
         </figure>
 
-        <h3>The front door, up close</h3>
+<h3>Detail: the front door, up close</h3>
         <figure class="shot"><div class="frame">
           <svg viewBox="0 0 900 440" role="img" aria-labelledby="m2t">
             <title id="m2t">Elevation drawing of the front door with its closer, keypad, handwritten sign, and no house number</title>
@@ -485,23 +516,66 @@
           <figcaption class="hero-cap">The closer and the sign both put the work on whoever is pushing. The missing number is a problem for anyone who doesn't already know the house.</figcaption>
         </figure>
 
-        <h3>The walk to campus, day and night</h3>
+        <h3 id="felt">Map 2: the house rearranged by how far things feel</h3>
+        <p class="measure">A floor plan puts things where they are. This one starts that way, then moves every place to how far it felt from my room while my back was hurt. My own bathroom ends up right next to me. The front door, only a few steps from the stairs, ends up near the edge, and campus falls off the map.</p>
         <figure class="shot"><div class="frame">
-          <svg viewBox="0 0 900 280" role="img" aria-labelledby="m3t">
-            <title id="m3t">Chart of how unsafe and painful the walk feels over 15 minutes: low and steady by day, high for almost the whole walk at night</title>
-            <line x1="80" y1="220" x2="840" y2="220" stroke="currentColor" stroke-opacity=".35"/>
-            <line x1="80" y1="40" x2="80" y2="220" stroke="currentColor" stroke-opacity=".35"/>
-            <text x="70" y="50" text-anchor="end" font-size="11" fill="var(--ink-faint)">high</text><text x="70" y="218" text-anchor="end" font-size="11" fill="var(--ink-faint)">low</text>
-            <g font-size="11" fill="var(--ink-faint)" letter-spacing=".06em" text-anchor="middle"><text x="80" y="242">0 MIN</text><text x="333" y="242">5</text><text x="586" y="242">10</text><text x="840" y="242">15+</text></g>
-            <path d="M80 190 C 300 180, 560 160, 840 140" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="6 5"/>
-            <text x="846" y="138" font-size="12.5" fill="var(--ink-faint)">day</text>
-            <path d="M80 195 C 120 195, 140 80, 220 70 S 700 60, 770 66 C 800 70, 820 150, 840 170" fill="none" stroke="var(--no-ink)" stroke-width="2"/>
-            <text x="846" y="174" font-size="12.5" fill="var(--no-ink)">night</text>
-            <line x1="80" y1="262" x2="125" y2="262" stroke="var(--accent)" stroke-width="3"/><text x="132" y="266" font-size="12" fill="var(--accent)">motion light reaches this far</text>
+          <div class="layers"><button type="button" class="morph-btn" id="feltBtn" aria-pressed="false">Show felt distance</button></div>
+          <svg viewBox="0 0 900 540" role="img" aria-labelledby="m4t" id="feltMap">
+            <title id="m4t">Places in and around the house, first in their real layout, then moved so that distance from my room equals how hard each place is to reach</title>
+            <g class="felt-rings">
+              <circle cx="450" cy="270" r="80" class="ring"/><circle cx="450" cy="270" r="160" class="ring"/><circle cx="450" cy="270" r="240" class="ring"/><circle cx="450" cy="270" r="320" class="ring"/>
+              <text class="tm" x="456" y="185">EASY</text><text class="tm" x="456" y="105">TAKES EFFORT</text><text class="tm" x="456" y="25">HURTS</text><text class="tm" x="780" y="320">I AVOID IT</text>
+            </g>
+            <g class="real-frame">
+              <rect x="40" y="40" width="300" height="200" fill="none" stroke="var(--ink)" stroke-opacity=".35"/><text class="tm" x="40" y="30">SECOND FLOOR</text>
+              <rect x="40" y="290" width="300" height="200" fill="none" stroke="var(--ink)" stroke-opacity=".35"/><text class="tm" x="40" y="280">GROUND FLOOR</text>
+              <path d="M340 470 C 480 470, 560 420, 640 400 S 760 360, 820 330" fill="none" stroke="var(--ink)" stroke-opacity=".3" stroke-dasharray="3 5"/>
+              <text class="tm" x="560" y="460">15+ MINUTES ON FOOT</text>
+            </g>
+            <g class="node me" data-real="80,190" data-felt="450,270"><circle r="9"/><text x="14" y="5">Room 11, me</text></g>
+            <g class="node ok" data-real="70,215" data-felt="500,235"><circle r="6"/><text x="11" y="4">my bathroom</text></g>
+            <g class="node ok" data-real="250,75" data-felt="360,220"><circle r="6"/><text x="11" y="4">the chair</text></g>
+            <g class="node mid" data-real="290,70" data-felt="330,170"><circle r="6"/><text x="11" y="4">stair C</text></g>
+            <g class="node mid" data-real="290,225" data-felt="560,150"><circle r="6"/><text x="11" y="4">stair A</text></g>
+            <g class="node mid" data-real="90,340" data-felt="290,360"><circle r="6"/><text x="11" y="4">kitchen</text></g>
+            <g class="node mid" data-real="310,370" data-felt="610,370"><circle r="6"/><text x="11" y="4">shared WC</text></g>
+            <g class="node no" data-real="220,485" data-felt="690,250"><circle r="6"/><text x="11" y="4">front door</text></g>
+            <g class="node no" data-real="200,300" data-felt="250,470"><circle r="6"/><text x="11" y="4">back door, the address</text></g>
+            <g class="node no" data-real="640,400" data-felt="760,140"><circle r="6"/><text x="11" y="4">the street at night</text></g>
+            <g class="node no" data-real="820,330" data-felt="880,40"><circle r="6"/><text x="-12" y="22" text-anchor="end">RPI campus</text></g>
           </svg>
         </div>
-          <figcaption class="hero-cap">My own read of the walk, not measured data. By day it just hurts more the longer I go. At night it feels unsafe almost as soon as I leave the light, so I stay home.</figcaption>
+          <figcaption class="hero-cap">Distances are how they felt to me, not measurements. The street is placed by fear rather than effort: at night I wouldn't walk it even when my back felt fine.</figcaption>
         </figure>
+
+        <h3 id="day">Map 3: one day in the house</h3>
+        <p class="measure">The same route changes with the hour. Drag the slider, or press play, to move through a day while my back was hurt. The notes come from my field notes; the times are approximate.</p>
+        <figure class="shot"><div class="frame">
+          <div class="day-controls">
+            <button type="button" class="morph-btn" id="dayPlay" aria-pressed="false">Play</button>
+            <input type="range" id="dayRange" min="0" max="24" step="0.25" value="9" aria-label="Time of day">
+            <output id="dayTime" class="tm-out">9:00 AM</output>
+          </div>
+          <svg viewBox="0 0 900 230" role="img" aria-labelledby="m5t" id="daySvg">
+            <title id="m5t">A route from my room to campus. The sky darkens with the hour, and a dot shows where I am.</title>
+            <rect id="sky" x="0" y="0" width="900" height="230" fill="#EEF3F8"/>
+            <circle id="doorLight" cx="380" cy="120" r="46" fill="#F3E6B8" opacity="0"/>
+            <line x1="80" y1="120" x2="820" y2="120" stroke="var(--ink)" stroke-opacity=".35"/>
+            <line id="darkStreet" x1="400" y1="120" x2="800" y2="120" stroke="var(--no-ink)" stroke-width="3" stroke-dasharray="10 6" opacity="0"/>
+            <g class="stop"><circle cx="80" cy="120" r="5"/><text x="80" y="152" text-anchor="middle">Room 11</text></g>
+            <g class="stop"><circle cx="230" cy="120" r="5"/><text x="230" y="152" text-anchor="middle">stair C, chair</text></g>
+            <g class="stop"><circle cx="380" cy="120" r="5"/><text x="380" y="152" text-anchor="middle">front door</text></g>
+            <g class="stop"><circle cx="600" cy="120" r="5"/><text x="600" y="152" text-anchor="middle">the street</text></g>
+            <g class="stop"><circle cx="820" cy="120" r="5"/><text x="820" y="152" text-anchor="middle">RPI</text></g>
+            <circle id="me" cx="80" cy="120" r="10" fill="var(--accent)"/>
+            <text id="dayPain" x="80" y="196" class="ts">pain</text>
+            <rect id="painBar" x="120" y="187" width="0" height="10" fill="var(--no-ink)" opacity=".7"/>
+          </svg>
+          <p id="dayNote" class="day-note" aria-live="polite"></p>
+        </div>
+          <figcaption class="hero-cap">Motion here does what a floor plan can't: it shows that the house and the street are different places at 9 AM and at 9 PM.</figcaption>
+        </figure>
+
       </section>
 
       <section class="doc" id="hw3-items">
@@ -530,7 +604,7 @@
           <div class="item-body">
             <h3>The walk to campus at night</h3>
             <div class="qa"><div class="q">What it does</div><p>The 15-minute walk and the dark street decide when I can get to campus and whether I go alone. The motion light only covers the doorstep.</p></div>
-            <div class="qa"><div class="q">Design response</div><p>The day and night chart above maps the walk by how unsafe and painful it feels. As a proposal: pedestrian lighting along the route, and a shuttle or safe-ride stop that reaches off-campus houses.</p></div>
+            <div class="qa"><div class="q">Design response</div><p>Map 3 above plays the walk out over a day, so the change at dark is visible. As a proposal: pedestrian lighting along the route, and a shuttle or safe-ride stop that reaches off-campus houses.</p></div>
           </div>
         </div>
       </section>
@@ -541,6 +615,8 @@
         <p class="doc-sub">Laws, money, stories, and what the house lets me do</p>
 
         <p class="measure">A floor plan draws my front door and my bedroom door with the same line. It doesn't show that one of them hurts to open, that the stairs are fine because of the handrails, or that the street outside scares me at night. So for HW3 I drew the house in effort, toilet access, and fear. I took the idea from <em>Counter Mapping</em>, where Zuni artists map land by what it means to the people who live there instead of by borders other people drew. Mine is a house, not a homeland, but the person using the space still decides what goes on the map.</p>
+
+        <p class="measure">The plan with layers answers the assignment directly, but it still looks like a plan. The other two maps are my attempt to get at what actually happens around the house. The felt-distance map shows my bathroom as the closest thing to me and campus as the farthest, which is how the week felt. The day map adds time, because the street at 9 AM and the street at 9 PM are not the same place for me, and a still drawing can only show one of them.</p>
 
         <h3>Infrastructure beyond the objects</h3>
         <p class="measure">Most of what shaped this house isn't physical. Title III of the ADA covers public accommodations, not private homes, so nothing requires this house to be accessible. The Fair Housing Act requires accessible design in multifamily buildings first occupied after March 1991, so older buildings like this one are exempt. A tenant can ask for a "reasonable modification" under the same law, but usually has to pay for it. In old housing, fixing access is left to the disabled tenant.</p>
@@ -579,6 +655,75 @@
     if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.hash === '#' + e.target.id));
   }), { rootMargin: '-40% 0px -55% 0px' });
   document.querySelectorAll('section.doc').forEach(sec => spy.observe(sec));
+
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Map 2: move each place between its real position and its felt distance.
+  const felt = document.getElementById('feltMap');
+  const feltBtn = document.getElementById('feltBtn');
+  const place = mode => felt.querySelectorAll('.node').forEach(n => {
+    const [x, y] = n.dataset[mode].split(',');
+    n.style.transform = `translate(${x}px, ${y}px)`;
+  });
+  const setFelt = on => {
+    felt.classList.toggle('felt', on);
+    place(on ? 'felt' : 'real');
+    feltBtn.textContent = on ? 'Show real layout' : 'Show felt distance';
+    feltBtn.setAttribute('aria-pressed', on);
+  };
+  setFelt(false);
+  feltBtn.addEventListener('click', () => setFelt(!felt.classList.contains('felt')));
+  if (!reduce) {
+    const once = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTimeout(() => setFelt(true), 900); once.disconnect(); }
+    }, { threshold: .6 });
+    once.observe(felt);
+  }
+
+  // Map 3: one day. [start hour, end hour, from x, to x, pain 0-1, note]
+  const day = [
+    [0, 7, 80, 80, .2, "Night. My bathroom is in my room, so I don't have to use the stairs in the dark."],
+    [7, 8.5, 80, 80, .4, "Morning. Getting up is slow. Having my own bathroom helps."],
+    [8.5, 8.75, 80, 230, .6, "Down stair C, one hand on each rail."],
+    [8.75, 9, 230, 380, .6, "Down the hallway to the front door."],
+    [9, 9.25, 380, 380, 1, "The front door. The closer pushes back, and this is the part that hurts most."],
+    [9.25, 9.75, 380, 820, .85, "The walk. More than 15 minutes, and my back aches more the longer I go."],
+    [9.75, 16.5, 820, 820, .5, "On campus, on the days I can make the walk at all."],
+    [16.5, 17, 820, 380, .85, "Walking back while it's still light."],
+    [17, 17.25, 380, 380, 1, "The door again, from outside this time."],
+    [17.25, 17.5, 380, 230, .7, "Up stair C. I sit on the chair at the top for a minute."],
+    [17.5, 17.75, 230, 80, .4, "Back to my room."],
+    [17.75, 19, 80, 80, .3, "Evening in my room."],
+    [19, 24.01, 80, 80, .2, "Dark out. The light over the front door only covers the doorstep. The street past it is dark, so I stay in."],
+  ];
+  const range = document.getElementById('dayRange'), out = document.getElementById('dayTime'),
+        note = document.getElementById('dayNote'), svg = document.getElementById('daySvg'),
+        me = document.getElementById('me'), sky = document.getElementById('sky'),
+        bar = document.getElementById('painBar'), lamp = document.getElementById('doorLight'),
+        street = document.getElementById('darkStreet'), play = document.getElementById('dayPlay');
+  const mix = (a, b, t) => '#' + [0, 2, 4].map(i => Math.round(parseInt(a.substr(i, 2), 16) * (1 - t) + parseInt(b.substr(i, 2), 16) * t).toString(16).padStart(2, '0')).join('');
+  const dark = h => h < 6 || h >= 19.5 ? 1 : h < 8 ? (8 - h) / 2 : h >= 17.5 ? (h - 17.5) / 2 : 0;
+  const clock = h => { const m = Math.round((h % 1) * 60), hh = Math.floor(h) % 24; return `${(hh + 11) % 12 + 1}:${String(m).padStart(2, '0')} ${hh < 12 ? 'AM' : 'PM'}`; };
+  const render = h => {
+    const [s, e, x0, x1, pain, text] = day.find(d => h >= d[0] && h < d[1]);
+    me.setAttribute('cx', x0 + (x1 - x0) * Math.min(1, (h - s) / (e - s)));
+    const d = dark(h);
+    sky.setAttribute('fill', mix('EEF3F8', '3A4656', d));
+    svg.classList.toggle('night', d > .5);
+    lamp.setAttribute('opacity', d * .9);
+    street.setAttribute('opacity', d);
+    bar.setAttribute('width', pain * 200);
+    out.textContent = clock(h);
+    if (note.textContent !== text) note.textContent = text;
+  };
+  range.addEventListener('input', () => render(+range.value));
+  let timer = null;
+  play.addEventListener('click', () => {
+    if (timer) { clearInterval(timer); timer = null; play.textContent = 'Play'; play.setAttribute('aria-pressed', false); return; }
+    play.textContent = 'Pause'; play.setAttribute('aria-pressed', true);
+    timer = setInterval(() => { range.value = (+range.value + .25) % 24; render(+range.value); }, 180);
+  });
+  render(+range.value);
 </script>
 </body>
 </html>
