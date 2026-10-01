@@ -98,6 +98,47 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
     <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--ink)"/></marker>
     <marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--bad)"/></marker>
     <radialGradient id="glow"><stop offset="0" stop-color="#ffd76a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd76a" stop-opacity="0"/></radialGradient>
+    <!-- floor plans redrawn from Andrew's sketches; reused by HW2 and HW3 maps -->
+    <g id="fl1" class="rough">
+      <polygon class="hall" points="150,30 610,30 610,670 230,670 230,340 150,340"/>
+      <rect class="room" x="150" y="30" width="95" height="80"/>
+      <rect class="room" x="410" y="30" width="80" height="40"/><rect class="room" x="410" y="70" width="80" height="40"/>
+      <rect class="room" x="150" y="120" width="145" height="210"/>
+      <rect class="room" x="365" y="205" width="120" height="130" style="fill:var(--line)"/>
+      <rect class="room" x="485" y="225" width="110" height="95"/>
+      <rect class="room" x="550" y="325" width="55" height="80"/>
+      <rect class="room" x="490" y="410" width="120" height="85"/>
+      <rect class="room" x="230" y="410" width="60" height="85"/>
+      <path class="thin" d="M365 400 L490 400"/>
+      <rect class="stairs" x="420" y="150" width="100" height="50"/>
+      <rect class="stairs" x="470" y="535" width="65" height="55"/>
+      <rect class="stairs" x="470" y="615" width="65" height="50" style="fill:url(#hatchH)"/>
+      <polygon class="wall" points="150,30 610,30 610,670 230,670 230,340 150,340"/>
+      <line class="door-gap" x1="297" y1="670" x2="363" y2="670"/>
+      <line class="door-gap" x1="300" y1="30" x2="355" y2="30"/>
+      <path class="thin" stroke-dasharray="3 5" d="M295 525 Q330 480 362 470"/>
+      <text class="lbl" x="165" y="78">Room 4</text><text class="lbl" x="444" y="57">5</text><text class="lbl" x="444" y="97">6</text>
+      <text class="lbl" x="190" y="230">Kitchen</text><text class="lbl" x="508" y="278">Room 2</text>
+      <text class="lbl-s" x="562" y="372">WC</text><text class="lbl" x="515" y="458">Room 3</text><text class="lbl-s" x="238" y="458">Rm 1</text>
+    </g>
+    <g id="fl2" class="rough">
+      <rect class="hall" x="440" y="180" width="105" height="595"/><rect class="hall" x="545" y="675" width="55" height="65"/><rect class="hall" x="545" y="150" width="15" height="35"/>
+      <rect class="room" x="250" y="30" width="185" height="310"/>
+      <rect class="room" x="435" y="30" width="130" height="150"/>
+      <rect class="room" x="250" y="345" width="195" height="265"/>
+      <rect class="room" x="545" y="240" width="105" height="175"/>
+      <rect class="room" x="545" y="415" width="105" height="45" style="fill:var(--mid-soft)"/>
+      <rect class="room" x="545" y="460" width="105" height="165"/>
+      <rect class="room" x="395" y="300" width="40" height="40" style="fill:var(--good-soft)"/>
+      <rect class="room" x="525" y="140" width="40" height="40" style="fill:var(--good-soft)"/>
+      <rect class="room" x="405" y="345" width="40" height="40" style="fill:var(--good-soft)"/>
+      <rect class="stairs" x="560" y="130" width="85" height="55"/>
+      <rect class="stairs" x="600" y="675" width="75" height="65"/>
+      <path class="wall" d="M440 180 L440 775 L545 775 L545 740 L600 740 M600 675 L545 675 L545 625 M545 240 L545 185 L560 185"/>
+      <text class="lbl" x="310" y="190">Room 8</text><text class="lbl" x="465" y="100">Room 7</text><text class="lbl" x="300" y="490">Room 11</text>
+      <text class="lbl" x="562" y="330">Room 9</text><text class="lbl-s" x="575" y="444">bath</text><text class="lbl" x="560" y="548">Room 10</text>
+      <text class="lbl-s" x="398" y="326">bath</text><text class="lbl-s" x="528" y="166">bath</text><text class="lbl-s" x="408" y="371">bath</text>
+    </g>
   </defs>
 </svg>
 
@@ -126,89 +167,53 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
 <section id="map" class="wide">
   <h3>Map 1: Ground floor + basement</h3>
   <figure class="map">
-    <svg viewBox="0 0 900 640" role="img" aria-labelledby="g1t">
-      <title id="g1t">Ground floor plan showing front door, three staircases, shared restroom, rooms, common area and back door</title>
-      <g class="rough">
-        <rect class="hall" x="60" y="40" width="780" height="440"/>
-        <!-- rooms -->
-        <rect class="room" x="60" y="40" width="140" height="145"/><text class="lbl" x="95" y="118">Room 3</text>
-        <rect class="room" x="60" y="185" width="140" height="145"/><text class="lbl" x="95" y="262">Room 2</text>
-        <rect class="room" x="60" y="330" width="140" height="150"/><text class="lbl" x="95" y="410">Room 1</text>
-        <rect class="room" x="560" y="270" width="280" height="210"/><text class="lbl" x="620" y="370">Rooms 4–6</text><text class="lbl-s" x="606" y="394">(not mapped in detail)</text>
-        <rect class="room" x="430" y="390" width="130" height="90"/><text class="lbl" x="440" y="425">Shared</text><text class="lbl" x="440" y="447">restroom</text><text class="lbl-s" x="440" y="468">all-gender</text>
-        <!-- stairs -->
-        <rect class="stairs" x="280" y="390" width="75" height="90"/><text class="lbl" x="290" y="382">A ↑ 2F</text>
-        <rect class="stairs" x="355" y="390" width="75" height="90" style="fill:url(#hatchH)"/><text class="lbl" x="360" y="382">B ↓ base.</text>
-        <rect class="stairs" x="280" y="40" width="100" height="100"/><text class="lbl" x="292" y="160">C ↑ 2F</text>
-        <!-- common area -->
-        <text class="lbl" x="520" y="120">Common area</text>
-        <line class="thin" x1="560" y1="40" x2="640" y2="40" style="stroke-width:6;stroke:var(--paper2)"/>
-        <line class="thin" x1="560" y1="34" x2="640" y2="34"/><text class="lbl-s" x="540" y="28">curtained glass door</text>
-        <!-- outer wall -->
-        <rect class="wall" x="60" y="40" width="780" height="440"/>
-      </g>
+    <svg viewBox="0 -40 900 830" role="img" aria-labelledby="g1t">
+      <title id="g1t">Ground floor plan: front door at the bottom, stairs A and B to its right, a hallway up the middle to stair C, kitchen, rooms 1 to 6, a shared restroom and the back door at the top</title>
+      <use href="#fl1"/>
       <!-- front door -->
-      <line class="door-gap" x1="212" y1="480" x2="268" y2="480"/>
-      <path d="M212 480 L212 430" class="thin s-bad" style="stroke-width:3"/>
-      <path d="M212 430 A50 50 0 0 1 262 480" class="thin" stroke-dasharray="4 4"/>
-      <text class="lbl-b" x="160" y="510">FRONT DOOR</text>
-      <text class="lbl-s" x="120" y="532">heavy · closer · keypad · "shut tight" sign</text>
-      <text class="lbl-s" x="120" y="552">no address visible</text>
-      <circle cx="240" cy="500" r="26" fill="url(#glow)"/><text class="lbl-s" x="270" y="510">motion light</text>
+      <circle cx="330" cy="676" r="24" fill="url(#glow)"/>
+      <path d="M297 670 L297 625" class="thin s-bad" style="stroke-width:3"/>
+      <text class="lbl-b" x="270" y="712">FRONT DOOR</text><text class="lbl-s" x="372" y="700">motion light</text>
+      <text class="lbl-s" x="190" y="734">heavy · closer · keypad · "shut tight" sign</text>
+      <text class="lbl-s" x="190" y="754">no address visible</text>
       <!-- back door -->
-      <line class="door-gap" x1="840" y1="150" x2="840" y2="200"/>
-      <path d="M840 150 L800 150" class="thin" style="stroke-width:3"/>
-      <text class="lbl" x="752" y="230">BACK DOOR</text><text class="lbl-s" x="700" y="252">mail · address on paper</text>
-      <!-- route arrows -->
-      <path d="M240 470 L240 260" class="thin" marker-end="url(#arr)" stroke-dasharray="6 5"/>
-      <text class="lbl-s" x="214" y="240" transform="rotate(-90 214 240)">hallway</text>
-      <path d="M240 455 L300 455" class="thin" marker-end="url(#arr)"/>
-      <path d="M240 175 L290 140" class="thin" marker-end="url(#arr)"/>
+      <text class="lbl" x="285" y="-12">BACK DOOR</text><text class="lbl-s" x="380" y="-12">mail · address on paper</text>
+      <!-- routes -->
+      <path d="M330 660 L330 600 L462 590" class="thin" marker-end="url(#arr)"/>
+      <path d="M330 590 L330 175 L412 175" class="thin" marker-end="url(#arr)" stroke-dasharray="6 5"/>
+      <text class="lbl-s" x="322" y="380" transform="rotate(-90 322 380)">hallway</text>
+      <!-- right-side labels -->
+      <path d="M525 175 L632 175" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="640" y="180">Stair C ↑ 2F</text><text class="lbl-s" x="640" y="200">straight in, then right</text>
+      <path d="M607 365 L632 365" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="640" y="360">Shared restroom</text><text class="lbl-s" x="640" y="380">all-gender, between rooms 2 + 3</text>
+      <path d="M537 562 L632 562" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="640" y="567">Stair A ↑ 2F</text><text class="lbl-s" x="640" y="587">right of the entrance</text>
+      <path d="M537 630 L632 630" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="640" y="635">Stair B ↓ basement</text>
       <!-- basement inset -->
-      <g class="rough">
-        <rect class="room" x="560" y="540" width="280" height="80" style="fill:var(--paper2)"/>
-        <rect class="stairs" x="560" y="540" width="70" height="80" style="fill:url(#hatchH)"/>
-      </g>
-      <text class="lbl" x="650" y="585">Basement (via stair B)</text>
-      <path d="M392 480 C 400 560, 480 580, 556 580" class="thin" marker-end="url(#arr)" stroke-dasharray="4 4"/>
+      <g class="rough"><rect class="room" x="660" y="680" width="200" height="70" style="fill:var(--paper2)"/><rect class="stairs" x="660" y="680" width="55" height="70" style="fill:url(#hatchH)"/></g>
+      <text class="lbl" x="728" y="720">Basement</text>
+      <path d="M535 655 C 580 700, 620 715, 656 715" class="thin" marker-end="url(#arr)" stroke-dasharray="4 4"/>
     </svg>
-    <figcaption>Room numbers on the ground floor are approximate. Every way up or down is stairs. The only shared restroom is down here, but bedrooms with no bathroom are upstairs.</figcaption>
+    <figcaption>Redrawn from my own sketch. Every way up or down is stairs. The only shared restroom on this floor sits between rooms 2 and 3. The grey block in the middle is a walled-off section.</figcaption>
   </figure>
 
   <h3>Map 2: Second floor</h3>
   <figure class="map">
-    <svg viewBox="0 0 900 480" role="img" aria-labelledby="g2t">
-      <title id="g2t">Second floor plan showing rooms 7 to 11, bathrooms, stairs A and C, a chair and a plywood patch</title>
-      <g class="rough">
-        <rect class="hall" x="60" y="40" width="780" height="400"/>
-        <rect class="room" x="60" y="40" width="140" height="400" style="fill:var(--paper2)"/><text class="lbl-s" x="80" y="245">other / storage</text>
-        <rect class="stairs" x="280" y="40" width="100" height="160"/><text class="lbl" x="296" y="225">C</text>
-        <rect class="room" x="380" y="40" width="150" height="160"/><text class="lbl" x="420" y="110">Room 7</text>
-        <rect class="room" x="530" y="40" width="150" height="160"/><text class="lbl" x="570" y="110">Room 8</text>
-        <rect class="room" x="680" y="40" width="160" height="160"/><text class="lbl" x="725" y="110">Room 9</text>
-        <rect class="stairs" x="280" y="260" width="150" height="180"/><text class="lbl" x="300" y="252">A</text>
-        <rect class="room" x="430" y="260" width="180" height="180"/><text class="lbl" x="470" y="345">Room 11</text><text class="lbl-s" x="485" y="368">(mine)</text>
-        <rect class="room" x="610" y="260" width="230" height="180"/><text class="lbl" x="690" y="345">Room 10</text>
-        <!-- private baths -->
-        <rect class="room f-good" x="480" y="160" width="50" height="40"/><text class="lbl-s" x="484" y="186">bath</text>
-        <rect class="room f-good" x="630" y="160" width="50" height="40"/><text class="lbl-s" x="634" y="186">bath</text>
-        <rect class="room f-good" x="560" y="260" width="50" height="40"/><text class="lbl-s" x="564" y="286">bath</text>
-        <!-- shared bath between 9 and 10 -->
-        <rect class="room f-mid" x="790" y="200" width="50" height="60"/><text class="lbl-s" x="793" y="235">bath</text>
-        <rect class="wall" x="60" y="40" width="780" height="400"/>
-      </g>
-      <text class="lbl-s" x="560" y="232">long, narrow hallway</text>
-      <!-- chair -->
-      <rect x="236" y="150" width="28" height="28" rx="3" class="thin" style="fill:var(--good-soft);stroke:var(--good)"/><text class="lbl-g" x="214" y="140">chair = rest</text>
-      <!-- plywood -->
-      <rect x="286" y="262" width="60" height="12" class="m-bad"/><text class="lbl-b" x="290" y="470">plywood patch on railing</text>
-      <path d="M316 448 L316 280" class="thin s-bad" marker-end="url(#arrB)"/>
-      <text class="lbl-g" x="600" y="472" style="font-size:13px">handrails on both sides of every stair</text>
+    <svg viewBox="200 0 700 810" role="img" aria-labelledby="g2t">
+      <title id="g2t">Second floor plan: one long hallway, rooms 7, 8 and 11 with private bathrooms, rooms 9 and 10 sharing a bathroom, stair C at the top and stair A at the bottom</title>
+      <use href="#fl2"/>
+      <text class="lbl-s" x="500" y="560" transform="rotate(-90 500 560)">long, narrow hallway</text>
+      <path d="M645 158 L682 158" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="690" y="163">Stair C ↓</text><text class="lbl-s" x="690" y="183">to the kitchen side</text>
+      <rect x="546" y="188" width="20" height="20" rx="3" class="thin" style="fill:var(--good-soft);stroke:var(--good)"/>
+      <path d="M568 198 L682 230" class="thin" stroke-dasharray="2 4"/><text class="lbl-g" x="690" y="236">chair = rest spot</text>
+      <path d="M652 437 L682 437" class="thin" stroke-dasharray="2 4"/><text class="lbl" x="690" y="442">bath shared</text><text class="lbl-s" x="690" y="462">by rooms 9 + 10</text>
+      <rect x="555" y="666" width="45" height="9" class="m-bad"/>
+      <path d="M602 668 L682 640" class="thin s-bad" stroke-dasharray="2 4"/><text class="lbl-b" x="690" y="640">plywood patch</text><text class="lbl-s" x="690" y="660">on the railing</text>
+      <path d="M677 707 L682 707" class="thin"/><text class="lbl" x="690" y="712">Stair A ↓</text><text class="lbl-s" x="690" y="732">to the front entrance</text>
+      <text class="lbl-g" x="690" y="775" style="font-size:14px">handrails on both</text><text class="lbl-g" x="690" y="795" style="font-size:14px">sides of every stair</text>
     </svg>
-    <div class="legend"><span style="--c:var(--good-soft)">private bathroom (rooms 7, 8, 11)</span><span style="--c:var(--mid-soft)">shared bathroom between 9 and 10</span><span style="--c:var(--bad)">quick-fix repair</span></div>
+    <div class="legend"><span style="--c:var(--good-soft)">private bathroom (rooms 7, 8, 11)</span><span style="--c:var(--mid-soft)">shared bathroom (rooms 9, 10)</span><span style="--c:var(--bad)">quick-fix repair</span></div>
   </figure>
 
-  <h3>Map 3: House to campus</h3>
+<h3>Map 3: House to campus</h3>
   <figure class="map">
     <svg viewBox="0 0 900 260" role="img" aria-labelledby="g3t">
       <title id="g3t">Diagram of the walk from the house to RPI: more than 15 minutes through a dark area</title>
@@ -235,7 +240,7 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
     <div class="flow"><h4>2. A visitor or delivery arriving</h4>
       <ol><li data-e="1">arrives at front</li><li data-e="3">no address anywhere<small>is this the right house?</small></li><li data-e="2">walks around back</li><li data-e="1">finds paper address by mail</li></ol></div>
     <div class="flow"><h4>3. A resident with no private bathroom needs a toilet</h4>
-      <ol><li data-e="1">leave room (9, 10 or ground floor)</li><li data-e="2">hallway</li><li data-e="3">or stairs down to shared restroom<small>at night, injured</small></li><li data-e="1">shared bath</li></ol></div>
+      <ol><li data-e="1">leave room 1–6</li><li data-e="2">hallway</li><li data-e="2">shared WC between rooms 2 + 3<small>one toilet for six rooms</small></li><li data-e="1">wait if taken</li></ol></div>
     <div class="flow"><h4>4. Getting to campus at night</h4>
       <ol><li data-e="3">heavy door again</li><li data-e="0">motion light</li><li data-e="3">dark street<small>scary alone</small></li><li data-e="3">15+ min walk<small>pain grows</small></li><li data-e="1">campus</li></ol></div>
   </div>
@@ -245,13 +250,13 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
   <h3>Photos: spaces, objects, absences</h3>
   <div class="photos" style="margin-top:20px">
     <figure><img src="img/IMG_4393.jpg" alt="Wooden front door with an overhead closer, keypad lock and a handwritten sign" loading="lazy"><figcaption>Front door (inside): overhead closer, keypad, lever handle, sign "Please lock &amp; shut door nice + tight."</figcaption></figure>
-    <figure><img src="img/IMG_4398.jpg" alt="Staircase with a wall handrail and an old balustrade" loading="lazy"><figcaption>Stairs to the second floor with a handrail on each side.</figcaption></figure>
-    <figure><img src="img/IMG_4395.jpg" alt="Stairs going up next to a doorway leading down to the basement" loading="lazy"><figcaption>Stairs up (left) and down to the basement (right). Worn, peeling treads.</figcaption></figure>
-    <figure><img src="img/IMG_4399.jpg" alt="Stair landing with a plywood board tied to the railing" loading="lazy"><figcaption>Plywood patching a gap in the railing. Glass block windows.</figcaption></figure>
-    <figure><img src="img/IMG_4401.jpg" alt="Metal chair at the top of the stairs next to a fire extinguisher" loading="lazy"><figcaption>A chair at the top of the stairs works as a rest spot.</figcaption></figure>
-    <figure><img src="img/IMG_4400.jpg" alt="Long narrow hallway with doors on both sides" loading="lazy"><figcaption>Second floor hallway: long and narrow.</figcaption></figure>
-    <figure><img src="img/IMG_4394.jpg" alt="Hallway with numbered room doors" loading="lazy"><figcaption>Hallway with numbered room doors.</figcaption></figure>
-    <figure><img src="img/IMG_4397.jpg" alt="Open common area leading to a curtained glass door" loading="lazy"><figcaption>Common area and curtained glass door.</figcaption></figure>
+    <figure><img src="img/IMG_4398.jpg" alt="Staircase with a wall handrail and an old balustrade" loading="lazy"><figcaption>Stair C, straight in from the front door then right, up to room 7. Handrail on each side.</figcaption></figure>
+    <figure><img src="img/IMG_4395.jpg" alt="Stairs going up next to a doorway leading down to the basement" loading="lazy"><figcaption>Right of the front entrance: stair A up (left) and stair B down to the basement (right). Worn, peeling treads.</figcaption></figure>
+    <figure><img src="img/IMG_4399.jpg" alt="Stair landing with a plywood board tied to the railing" loading="lazy"><figcaption>Top of stair A on the second floor: plywood patching a gap in the railing.</figcaption></figure>
+    <figure><img src="img/IMG_4401.jpg" alt="Metal chair at the top of the stairs next to a fire extinguisher" loading="lazy"><figcaption>Top of stair C by room 7: a chair that works as a rest spot.</figcaption></figure>
+    <figure><img src="img/IMG_4400.jpg" alt="Long narrow hallway with doors on both sides" loading="lazy"><figcaption>Second floor hallway: one long, narrow corridor with every room off it.</figcaption></figure>
+    <figure><img src="img/IMG_4394.jpg" alt="Hallway with numbered room doors" loading="lazy"><figcaption>Ground floor hallway from the entrance, room 1 on the left.</figcaption></figure>
+    <figure><img src="img/IMG_4397.jpg" alt="Wide opening leading to a curtained glass door" loading="lazy"><figcaption>Wide opening toward a curtained glass door.</figcaption></figure>
     <figure><img src="img/IMG_4396.jpg" alt="End of a hallway with a closed door" loading="lazy"><figcaption>End of a hallway; closet and door.</figcaption></figure>
   </div>
   <p class="mono" style="margin-top:16px">Absences not photographed: an address at the front, any step-free route between floors, street lighting.</p>
@@ -274,14 +279,14 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
   <p>The front door was the biggest problem. It has an overhead door closer, a keypad lock, and a handwritten sign that says "Please lock &amp; shut door nice + tight." The closer makes the door heavy, and pushing it with a hurt back is the hardest single movement in my day. The sign is an unwritten rule becoming a written one: the house expects everyone to pull the door shut firmly, which assumes a body that can do that.</p>
   <p>The address is not visible from the front door at all. The only place it is written is on a piece of paper at the back door, where the mail comes in. A delivery driver, a visitor, or an ambulance crew coming to the front would not be able to confirm they are at the right house. The building is legible to the mail carrier but not to a guest.</p>
   <p>There are three sets of stairs: one to the right of the front entrance going up to the second floor, one next to it going down to the basement, and another straight back and to the right that also goes up. The treads are worn and the paint is peeling in places. At one landing, a gap in the railing is patched with plywood, which tells me repairs here happen as quick fixes rather than planned updates. There is a metal chair at the top of the stairs. It may not have been put there for this reason, but it works as a place to rest after climbing.</p>
-  <p>Restrooms are unevenly spread. There is one shared all-gender restroom downstairs. Upstairs, rooms 7, 8, and 11 (mine) each have a private bathroom, and there is one more between rooms 9 and 10. Which room you rent decides whether you have to use the stairs or a hallway to reach a toilet. I happen to have a private bathroom, which made my injury much easier to live with.</p>
+  <p>Restrooms are unevenly spread. There is one shared all-gender restroom downstairs, between rooms 2 and 3, for all six ground floor rooms. Upstairs, rooms 7, 8, and 11 (mine) each have a private bathroom, and there is one more between rooms 9 and 10. Which room you rent decides whether you have to use the stairs or a hallway to reach a toilet. I happen to have a private bathroom, which made my injury much easier to live with.</p>
   <p>Outside, the house is in a dark area. A motion sensor light turns on over the front door at night, which helps at the door itself, but the street around the house is dark and I feel unsafe walking alone at night. Combined with the distance to campus, my access to RPI depends on the time of day, my back, and whether I have company.</p>
 
   <h4>Surprises and frustrations</h4>
   <p>What surprised me most was how much the door mattered compared to the stairs. I expected the stairs to be the barrier, but the handrails made them manageable, while the door has nothing to make it easier. The feature I pass every day and never noticed was the door closer itself. The accessibility feature not meant for me that I use anyway is the second handrail; I always used one side, and now I use both. The frustration was missing the group workshop, which showed me how quickly access to a class activity disappears when getting to campus becomes hard.</p>
 
   <h4>Spatial distribution and resource allocation</h4>
-  <p>Even inside one house, resources cluster. Private bathrooms are attached to certain rooms, and those rooms likely cost more, so comfort and access are partly bought through rent. The ground floor has the only shared restroom, but the bedrooms without one are upstairs. At the campus scale, students who live farther from RPI, often because housing is cheaper there, pay with time and physical effort every day. Distance is a form of inaccessibility that does not appear on any building's checklist, but it decides who can get to class, office hours, and events when their body changes.</p>
+  <p>Even inside one house, resources cluster. Private bathrooms are attached to certain rooms, and those rooms likely cost more, so comfort and access are partly bought through rent. Six rooms on the ground floor share one restroom, while three rooms upstairs have their own. At the campus scale, students who live farther from RPI, often because housing is cheaper there, pay with time and physical effort every day. Distance is a form of inaccessibility that does not appear on any building's checklist, but it decides who can get to class, office hours, and events when their body changes.</p>
 
   <h4>If I could redesign it</h4>
   <p>I would start small: adjust or replace the door closer so the door opens with less force, add a visible house number at the front, and replace the plywood with a real railing. At the neighborhood scale I would add street lighting along the route to campus and look at whether a shuttle or safe-ride option reaches houses this far out.</p>
@@ -306,7 +311,7 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
     <li>Chair at top of 2F stairs works as a rest spot.</li>
     <li>Signage: none at the front. Address only on paper at the back door where mail comes in.</li>
     <li>Front door: heavy, overhead closer, keypad, lever handle, handwritten "shut tight" sign. Hard to push with back pain.</li>
-    <li>Restrooms: 1 shared all-gender downstairs. 2F: one between rooms 9 and 10; private bathrooms in rooms 7, 8, and 11 (mine).</li>
+    <li>Restrooms: 1 shared all-gender downstairs, between rooms 2 and 3. 2F: one between rooms 9 and 10; private bathrooms in rooms 7, 8, and 11 (mine).</li>
     <li>Night: motion sensor light at the front door. Area around the house is dark; scary to walk alone.</li>
     <li>Distance: 15+ minute walk to RPI. With my injury, campus is not accessible to me right now.</li>
   </ul>
@@ -327,70 +332,58 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
       <label><input type="radio" name="layer" value="effort" checked><span>Effort / pain</span></label>
       <label><input type="radio" name="layer" value="toilet"><span>Steps to a toilet</span></label>
     </div>
-    <svg viewBox="0 0 900 560" role="img" aria-labelledby="m1t">
-      <title id="m1t">Combined two-floor plan with switchable layers for effort and restroom access</title>
-      <text class="mono" x="60" y="26" style="font-size:12px;fill:var(--muted)">GROUND FLOOR</text>
-      <text class="mono" x="480" y="26" style="font-size:12px;fill:var(--muted)">SECOND FLOOR</text>
-      <g class="rough">
-        <!-- ground (left) -->
-        <rect class="hall" x="60" y="40" width="380" height="440"/>
-        <rect class="room" x="60" y="40" width="90" height="140"/><rect class="room" x="60" y="180" width="90" height="140"/><rect class="room" x="60" y="320" width="90" height="160"/>
-        <rect class="stairs" x="200" y="40" width="70" height="90"/><rect class="stairs" x="200" y="400" width="60" height="80"/><rect class="stairs" x="260" y="400" width="60" height="80" style="fill:url(#hatchH)"/>
-        <rect class="room" x="320" y="400" width="120" height="80"/>
-        <rect class="room" x="320" y="230" width="120" height="170"/>
-        <rect class="wall" x="60" y="40" width="380" height="440"/>
-        <!-- second (right) -->
-        <rect class="hall" x="480" y="40" width="380" height="440"/>
-        <rect class="stairs" x="480" y="40" width="70" height="170"/>
-        <rect class="room" x="550" y="40" width="100" height="170"/><rect class="room" x="650" y="40" width="100" height="170"/><rect class="room" x="750" y="40" width="110" height="170"/>
-        <rect class="stairs" x="480" y="270" width="90" height="210"/>
-        <rect class="room" x="570" y="270" width="140" height="210"/><rect class="room" x="710" y="270" width="150" height="210"/>
-        <rect class="room" x="820" y="210" width="40" height="60"/>
-        <rect class="wall" x="480" y="40" width="380" height="440"/>
+    <svg viewBox="0 0 900 500" role="img" aria-labelledby="m1t">
+      <title id="m1t">Both floors side by side with switchable layers for effort and restroom access</title>
+      <text class="mono" x="40" y="22" style="font-size:12px;fill:var(--muted)">GROUND FLOOR</text>
+      <text class="mono" x="470" y="22" style="font-size:12px;fill:var(--muted)">SECOND FLOOR</text>
+      <g transform="translate(-65 19) scale(.7)">
+        <use href="#fl1"/>
+        <g class="layer l-effort">
+          <circle cx="330" cy="670" r="75" class="f-bad"/><circle cx="330" cy="670" r="38" class="f-bad"/>
+          <rect x="420" y="150" width="100" height="50" class="f-mid"/><rect x="470" y="535" width="65" height="55" class="f-mid"/><rect x="470" y="615" width="65" height="50" class="f-mid"/>
+          <path d="M330 640 L330 175 L412 175" class="thin s-bad" stroke-width="3" marker-end="url(#arrB)" stroke-dasharray="8 6"/>
+        </g>
+        <g class="layer l-toilet">
+          <rect x="150" y="30" width="95" height="80" class="f-mid"/><rect x="410" y="30" width="80" height="80" class="f-mid"/>
+          <rect x="485" y="225" width="110" height="95" class="f-mid"/><rect x="490" y="410" width="120" height="85" class="f-mid"/><rect x="230" y="410" width="60" height="85" class="f-mid"/>
+          <rect x="550" y="325" width="55" height="80" class="f-good" stroke="var(--good)" stroke-width="3"/>
+        </g>
       </g>
-      <!-- base labels -->
-      <g class="lbl-s">
-        <text x="78" y="115">Rm 3</text><text x="78" y="255">Rm 2</text><text x="78" y="405">Rm 1</text>
-        <text x="215" y="150">C ↑</text><text x="214" y="395">A ↑</text><text x="272" y="395">B ↓</text>
-        <text x="330" y="445">shared WC</text><text x="335" y="320">Rms 4–6</text>
-        <text x="585" y="130">Rm 7</text><text x="685" y="130">Rm 8</text><text x="785" y="130">Rm 9</text>
-        <text x="595" y="380">Rm 11 (me)</text><text x="750" y="380">Rm 10</text><text x="822" y="245">WC</text>
+      <g transform="translate(320 22) scale(.6)">
+        <use href="#fl2"/>
+        <g class="layer l-effort">
+          <rect x="560" y="130" width="85" height="55" class="f-mid"/><rect x="600" y="675" width="75" height="65" class="f-mid"/>
+          <rect x="250" y="345" width="195" height="265" class="f-good"/>
+          <circle cx="556" cy="198" r="18" class="f-good" stroke="var(--good)" stroke-width="2"/>
+          <rect x="555" y="664" width="45" height="12" class="m-bad"/>
+        </g>
+        <g class="layer l-toilet">
+          <rect x="250" y="30" width="185" height="310" class="f-good"/><rect x="435" y="30" width="130" height="150" class="f-good"/><rect x="250" y="345" width="195" height="265" class="f-good"/>
+          <rect x="545" y="240" width="105" height="175" class="f-mid"/><rect x="545" y="460" width="105" height="165" class="f-mid"/>
+          <rect x="545" y="415" width="105" height="45" class="f-good" stroke="var(--good)" stroke-width="3"/>
+        </g>
       </g>
-      <line class="door-gap" x1="160" y1="480" x2="200" y2="480"/><text class="lbl-s" x="140" y="505">front door</text>
-
-      <!-- Layer: plain -->
-      <g class="layer l-plan"><text class="lbl-s" x="60" y="540">Plain plan: every door, stair and room drawn with the same line weight.</text></g>
-
-      <!-- Layer: effort -->
+      <g class="layer l-plan"><text class="lbl" x="740" y="60">Plain plan</text><text class="lbl-s" x="740" y="84">Every door, stair and</text><text class="lbl-s" x="740" y="102">room drawn with the</text><text class="lbl-s" x="740" y="120">same line weight.</text></g>
       <g class="layer l-effort">
-        <circle cx="180" cy="478" r="46" class="f-bad"/><circle cx="180" cy="478" r="22" class="f-bad"/>
-        <text class="lbl-b" x="230" y="540">hardest: push the front door</text>
-        <rect x="200" y="40" width="70" height="90" class="f-mid"/><rect x="200" y="400" width="60" height="80" class="f-mid"/>
-        <rect x="480" y="40" width="70" height="170" class="f-mid"/><rect x="480" y="270" width="90" height="210" class="f-mid"/>
-        <text class="lbl" x="200" y="190" style="fill:var(--mid);font-weight:700">stairs: medium</text><text class="lbl-s" x="200" y="210">(handrails both sides)</text>
-        <rect x="486" y="272" width="56" height="10" class="m-bad"/><text class="lbl-b" x="560" y="540">plywood = unsure grip</text>
-        <circle cx="565" cy="225" r="14" class="f-good" stroke="var(--good)"/><text class="lbl-g" x="586" y="232">chair: rest</text>
-        <rect x="570" y="270" width="140" height="210" class="f-good"/><text class="lbl-g" x="590" y="410">rest + own bath</text>
-        <path d="M180 470 L180 300 L215 135" class="thin s-bad" stroke-width="2.5" marker-end="url(#arrB)" stroke-dasharray="7 5"/>
+        <text class="lbl" x="740" y="60">Effort / pain</text>
+        <text class="lbl-b" x="740" y="92">hardest:</text><text class="lbl-s" x="740" y="110">pushing the front door</text>
+        <text class="lbl" x="740" y="146" style="fill:var(--mid);font-weight:700">medium:</text><text class="lbl-s" x="740" y="164">stairs, OK because of</text><text class="lbl-s" x="740" y="182">handrails both sides</text>
+        <text class="lbl-g" x="740" y="218">helps:</text><text class="lbl-s" x="740" y="236">chair at top of stair C,</text><text class="lbl-s" x="740" y="254">my room + own bath</text>
+        <text class="lbl-b" x="740" y="290">red bar:</text><text class="lbl-s" x="740" y="308">plywood, unsure grip</text>
+        <text class="lbl-s" x="740" y="344">dashed: my route home</text>
       </g>
-
-      <!-- Layer: toilet access -->
       <g class="layer l-toilet">
-        <rect x="550" y="40" width="200" height="170" class="f-good"/><rect x="570" y="270" width="140" height="210" class="f-good"/>
-        <rect x="710" y="270" width="150" height="210" class="f-mid"/><rect x="750" y="40" width="110" height="170" class="f-mid"/>
-        <rect x="60" y="40" width="90" height="440" class="f-mid"/><rect x="320" y="230" width="120" height="170" class="f-mid"/>
-        <rect x="320" y="400" width="120" height="80" class="f-good" stroke="var(--good)" stroke-width="2"/>
-        <rect x="820" y="210" width="40" height="60" class="f-good" stroke="var(--good)" stroke-width="2"/>
-        <text class="lbl-g" x="560" y="232">0 steps: private bath (7, 8, 11)</text>
-        <text class="lbl" x="620" y="540" style="fill:var(--mid);font-weight:700">hallway trip: 9, 10, ground floor</text>
-        <text class="lbl-b" x="60" y="540">no toilet on 2F west side: stairs at night</text>
+        <text class="lbl" x="740" y="60">Steps to a toilet</text>
+        <text class="lbl-g" x="740" y="92">0 steps:</text><text class="lbl-s" x="740" y="110">private bath in</text><text class="lbl-s" x="740" y="128">rooms 7, 8, 11</text>
+        <text class="lbl" x="740" y="164" style="fill:var(--mid);font-weight:700">hallway trip:</text><text class="lbl-s" x="740" y="182">rooms 1–6 to the shared</text><text class="lbl-s" x="740" y="200">WC; rooms 9, 10 to</text><text class="lbl-s" x="740" y="218">their shared bath</text>
+        <text class="lbl-s" x="740" y="254">The room you rent</text><text class="lbl-s" x="740" y="272">decides which one</text><text class="lbl-s" x="740" y="290">you get.</text>
       </g>
     </svg>
     <div class="legend"><span style="--c:var(--bad-soft)">costs effort / pain</span><span style="--c:var(--mid-soft)">some effort / hallway trip</span><span style="--c:var(--good-soft)">easy / helps</span></div>
-    <figcaption>The plain plan treats the front door and my bedroom as equal lines. The effort layer shows the door as the biggest barrier and the stairs as manageable because of the handrails. The toilet layer shows that bathroom access is decided by which room you rent.</figcaption>
+    <figcaption>The plain plan treats the front door and my bedroom as equal lines. The effort layer shows the door as the biggest barrier and the stairs as manageable because of the handrails. The toilet layer shows that bathroom access depends on which room you rent.</figcaption>
   </figure>
 
-  <h3>Detail: the threshold</h3>
+<h3>Detail: the threshold</h3>
   <figure class="map">
     <svg viewBox="0 0 900 460" role="img" aria-labelledby="m2t">
       <title id="m2t">Elevation drawing of the front door with its closer, keypad, sign and missing address</title>
@@ -452,7 +445,7 @@ footer{border-top:1px solid var(--line);margin-top:96px;padding:28px 0 56px;colo
   </div>
   <div class="item i2">
     <h4>2. Vertical circulation: stairs, rails, restrooms</h4>
-    <p><b>What it does.</b> Three staircases connect three levels with no step-free alternative. The handrails make the stairs usable for a body like mine right now. Private bathrooms belong to specific rooms and the shared restroom is downstairs, so where you sleep decides how often you climb.</p>
+    <p><b>What it does.</b> Three staircases connect three levels with no step-free alternative. The handrails make the stairs usable for a body like mine right now. Private bathrooms belong to specific rooms and everyone else walks a hallway to a shared one, so where you sleep decides how far a toilet is.</p>
     <p><b>Design response.</b> Replace the plywood with a proper railing, repair the treads, and add contrasting edges on each step. Make the chair at the top of the stairs an intentional rest point. In the lease, let residents request a room near a bathroom or on the ground floor when they are injured or disabled, even temporarily.</p>
   </div>
   <div class="item i3">
